@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.dcyjcghjghjghj.MainActivity" >
+
+    <item
+        android:id="@+id/action_map"
+        android:orderInCategory="100"
+        android:icon="@drawable/map"
+        android:title="CIAO"
+        android:showAsAction="ifRoom"
+      />
+    <item
+        android:id="@+id/action_filter"
+        android:orderInCategory="100"
+        android:icon="@drawable/filter"
+        android:title="CIAO"
+        android:showAsAction="ifRoom"
+      />
+
+</menu>
