@@ -1,5 +1,8 @@
 package com.ariisens.nearsens.map;
 
+import com.ariisens.nearsens.interfaces.ICheckGPS;
+
+import android.R;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -38,9 +41,12 @@ public class GPSTracker extends Service implements LocationListener {
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
+    
+    private ICheckGPS iCheckGPS;
 
     public GPSTracker(Context context) {
         this.mContext = context;
+        iCheckGPS = (ICheckGPS) context;
         getLocation();
     }
 
@@ -58,9 +64,9 @@ public class GPSTracker extends Service implements LocationListener {
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
             if (!isGPSEnabled && !isNetworkEnabled) {
-            
+            	iCheckGPS.enableGPS();
             } else {
-            	Log.d("KKK", "BHO");
+            	
                 this.canGetLocation = true;
                 if (isNetworkEnabled) {
                     locationManager.requestLocationUpdates(
