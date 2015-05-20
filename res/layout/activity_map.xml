@@ -6,10 +6,70 @@
     android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <fragment
-        android:id="@+id/fragment1"
-        android:name="com.google.android.gms.maps.MapFragment"
+    <LinearLayout
+        android:id="@+id/llMappa"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        
+        android:background="#76c2af" >
+
+        <Spinner
+            android:id="@+id/spCat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/categoria_val"
+            android:paddingTop="16dp"
+            android:prompt="@string/categoria_main" />
+
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/categoria_val"
+            android:paddingTop="16dp"
+            android:prompt="@string/categoria_main" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/btnArea"
+                android:layout_width="wrap_content"
+         
+                android:layout_height="wrap_content"
+               
+                android:background="@drawable/area_map" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+         >
+
+        <fragment
+            android:id="@+id/fragment1"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <SeekBar
+            android:id="@+id/seekBarArea"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:rotation="-270"
+            android:layout_alignParentTop="true"
+            android:background="#76c2af" />
+
+    </RelativeLayout>
 
 </LinearLayout>

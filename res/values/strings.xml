@@ -4,5 +4,14 @@
     <string name="app_name">Nearsens</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_map">MapActivity</string>
+    
+    <string name="categoria_main">Seleziona una categoria</string>
+ 
+    <string-array name="categoria_val">
+         <item>Tutto</item>
+        <item>Attività comerciale </item>
+        <item>Punto d\'interesse</item>
+       
+    </string-array>
 
 </resources>
