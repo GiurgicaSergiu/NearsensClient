@@ -154,9 +154,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 
 		LatLng center = new LatLng(lat, lng);
 
-		MyLoopJ.getInstance().get(
-				"http://nearsens.somee.com/api/Places?lat=" + lat + "&lng="
-						+ lng + URL_BASE + raggioArea + urlApi, new JsonHttpResponseHandler() {
+		MyLoopJ.getInstance().get(MyLoopJ.getPlaces(lat, lng, raggioArea) + urlApi, new JsonHttpResponseHandler() {
 
 					@Override
 					public void onSuccess(int statusCode, Header[] headers,

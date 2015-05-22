@@ -15,4 +15,8 @@ public class MyLoopJ {
 			client = new AsyncHttpClient();
 		return client;
 	}
+	
+	public static String getPlaces(double lat,double lng,int raggioArea){
+		return "http://nearsens.somee.com/api/Places?lat=" + lat + "&lng="+ lng + "&distanceLimit=" + raggioArea;
+	}
 }
