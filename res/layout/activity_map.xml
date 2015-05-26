@@ -10,66 +10,98 @@
         android:id="@+id/llMappa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
         android:background="#76c2af" >
 
-        <Spinner
-            android:id="@+id/spCat"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:entries="@array/categoria_val"
-            android:paddingTop="16dp"
-            android:prompt="@string/categoria_main" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" >
 
-        <Spinner
-            android:id="@+id/spinner2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:entries="@array/categoria_val"
-            android:paddingTop="16dp"
-            android:prompt="@string/categoria_main" />
+            <TextView
+                android:id="@+id/txtTipo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scegli tipo"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#fff" />
+        </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1.2"
             android:gravity="center"
-            android:orientation="vertical" >
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" >
 
-            <Button
-                android:id="@+id/btnArea"
-                android:layout_width="wrap_content"
-         
+            <View
+                android:id="@+id/view1"
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:background="#fff"
+                 />
+
+            <TextView
+                android:id="@+id/txtCat"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-               
-                android:background="@drawable/area_map" />
+                android:text="Scegli categoria"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#fff" />
 
+            <View
+                android:id="@+id/view2"
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:background="#fff"
+                 />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" >
+
+            <TextView
+                android:id="@+id/txtKm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Km"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#fff" />
         </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-         >
+        android:layout_height="match_parent" >
 
         <fragment
             android:id="@+id/fragment1"
             android:name="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
 
         <SeekBar
             android:id="@+id/seekBarArea"
-            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:rotation="-270"
             android:layout_alignParentTop="true"
-            android:background="#76c2af" />
-
+            android:background="#76c2af"
+            android:rotation="-270"
+            android:visibility="invisible" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +24,9 @@ public class DialogOption extends DialogFragment {
 	private static final String RAGGIO = "raggio";
 	private SeekBar areaBar;
 	private TextView txtKmArea;
-	private Button btnOk;
+	private TextView txtRicerca;
+	private TextView txtOk;
+	private AssetManager assetManager;
 
 	public static DialogOption getInstance(int raggio) {
 		DialogOption dialog = new DialogOption();
@@ -38,6 +42,7 @@ public class DialogOption extends DialogFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		iOptionMap = (IOptionMap) activity;
+		assetManager = activity.getAssets();
 	}
 	
 	@Override
@@ -49,9 +54,17 @@ public class DialogOption extends DialogFragment {
 
 		areaBar = (SeekBar) view.findViewById(R.id.seekBarArea);
 		txtKmArea = (TextView) view.findViewById(R.id.txtKm);
-		btnOk = (Button) view.findViewById(R.id.btnOk);
+		txtRicerca = (TextView) view.findViewById(R.id.ricercaBar);
+		txtOk = (TextView) view.findViewById(R.id.txtOk);
+		
+		Typeface face = Typeface.createFromAsset(assetManager,
+	            "pl.ttf");
+		
+		txtKmArea.setTypeface(face);
+		txtRicerca.setTypeface(face);
+		txtOk.setTypeface(face);
 	
-		btnOk.setOnClickListener(new OnClickListener() {
+		txtOk.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {

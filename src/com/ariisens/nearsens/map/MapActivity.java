@@ -11,7 +11,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -20,10 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.ariisens.nearsens.R;
 import com.ariisens.nearsens.interfaces.ICheckGPS;
@@ -32,6 +31,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -41,65 +42,76 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 public class MapActivity extends Activity implements OnMapReadyCallback,
 		ICheckGPS, IOptionMap {
 
-	private static int raggioArea = 5;
+	private static final String URL_API = "url_api";
+	private static final String TIPO_VALUE = "url_val";
+	private static final String RAGGIO_VALUE = "raggio_area";
+	private static final String URL_API_CAT = "urls_cat";
+	private static final String CAT_VALUE = "cat_val";
+	private int raggioArea;
 	private static int zoom = 12;
 	private GoogleMap myMap;
 	private ArrayList<MarkerOptions> myMarkers;
-	private Button btnArea;
 	private Circle circle;
-	private String urlApi;
-	private static final String URL_BASE = "&distanceLimit=" ;
-	private Spinner spCat;
+	private String urlApiTipo;
+	private String urlApiCat;
+    private TextView txtTipo;
+    private TextView txtCat;
+    private TextView txtKm;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
-
-		urlApi = "";
-		spCat = (Spinner) findViewById(R.id.spCat);
-
-		spCat.setOnItemSelectedListener(new OnItemSelectedListener() {
-
+		
+		txtTipo = (TextView) findViewById(R.id.txtTipo);
+		txtCat = (TextView) findViewById(R.id.txtCat);
+		txtKm = (TextView) findViewById(R.id.txtKm);
+		
+		Typeface face = Typeface.createFromAsset(getAssets(),
+	            "pl.ttf");
+		
+		txtCat.setTypeface(face);
+		txtKm.setTypeface(face);
+		txtTipo.setTypeface(face);
+		
+		
+		txtTipo.setOnClickListener(new OnClickListener() {
+			
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
-
-				switch (position) {
-				case 0:
-					urlApi = "";
-					break;
-				case 1:
-					urlApi =  "&category=AC";
-					loadMyMap(myMap);
-					break;
-				case 2:
-					urlApi =  "&category=POI";
-					loadMyMap(myMap);
-					break;
-
-				default:
-					break;
-				}
-				
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-
+			public void onClick(View v) {
+				DialogSelectType.getInstance().show(getFragmentManager(), DialogSelectType.DIALOG_TAG);
 			}
 		});
-
-		btnArea = (Button) findViewById(R.id.btnArea);
-
-		btnArea.setOnClickListener(new OnClickListener() {
-
+		txtCat.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DialogSelectCategory.getInstance().show(getFragmentManager(), DialogSelectCategory.DIALOG_TAG);
+			}
+		});
+		txtKm.setOnClickListener(new OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
 				DialogOption.getInstance(raggioArea).show(getFragmentManager(),
 						DialogOption.DIALOG_TAG);
 			}
 		});
+		
+		urlApiTipo = "";
+		urlApiCat = "";
+		raggioArea = 5;
+		
+		if(savedInstanceState!=null){
+			urlApiTipo = savedInstanceState.getString(URL_API);
+			urlApiCat = savedInstanceState.getString(URL_API_CAT);
+			txtCat.setText(savedInstanceState.getString(CAT_VALUE));
+			txtTipo.setText(savedInstanceState.getString(TIPO_VALUE));
+			raggioArea = savedInstanceState.getInt(RAGGIO_VALUE);
+			txtKm.setText(raggioArea + " Km");
+		}
+
+		
 
 	}
 
@@ -154,7 +166,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 
 		LatLng center = new LatLng(lat, lng);
 
-		MyLoopJ.getInstance().get(MyLoopJ.getPlaces(lat, lng, raggioArea) + urlApi, new JsonHttpResponseHandler() {
+		MyLoopJ.getInstance().get(MyLoopJ.getPlaces(lat, lng, raggioArea) + urlApiTipo + urlApiCat, new JsonHttpResponseHandler() {
 
 					@Override
 					public void onSuccess(int statusCode, Header[] headers,
@@ -181,12 +193,6 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 
 					}
 				});
-
-		/*
-		 * for (MarkerOptions markerOption : CreateMarker.getMyMarkerOptions())
-		 * { Marker marker = googleMap.addMarker(markerOption);
-		 * hashMap.put(marker.getId(), marker); }
-		 */
 
 		googleMap.setMyLocationEnabled(true);
 		circle = googleMap.addCircle(new CircleOptions().center(center)
@@ -215,8 +221,16 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 				String name = json_data.getString("Name");
 
 				LatLng city = new LatLng(lat, lng);
+				
+				BitmapDescriptor bitmapDescriptor;
+				
+				if(json_data.getString("MainCategory").compareTo("AC") == 0){
+					bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.mac);
+				}else{
+					bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.mpoi);						
+				}
 
-				myMarkers.add(new MarkerOptions().title(name).position(city));
+				myMarkers.add(new MarkerOptions().title(name).position(city).icon(bitmapDescriptor));
 
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -252,12 +266,37 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 	public void updateRaggio(int raggio) {
 
 		raggioArea = raggio;
+		txtKm.setText(raggioArea + " Km");
 
 	}
 
 	@Override
 	public void onMyBackPressed() {
 		
+		loadMyMap(myMap);
+	}
+
+	@Override
+	public void updateTipo(String tipo,String value) {
+		urlApiTipo = tipo;
+		txtTipo.setText(value);
+		loadMyMap(myMap);
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(URL_API, urlApiTipo);
+		outState.putString(TIPO_VALUE, txtTipo.getText().toString());
+		outState.putString(URL_API_CAT, urlApiCat);
+		outState.putString(CAT_VALUE, txtCat.getText().toString());
+		outState.putInt(RAGGIO_VALUE, raggioArea);
+	}
+
+	@Override
+	public void updateCategory(String cat,String value) {
+		urlApiCat = cat;
+		txtCat.setText(value);
 		loadMyMap(myMap);
 	}
 }

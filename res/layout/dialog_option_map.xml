@@ -2,16 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:background="#76c2af"
         android:orientation="vertical" >
 
         <LinearLayout
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
@@ -20,16 +23,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Area ricerca "
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textSize="25dp"
+                android:textColor="#fff"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtKm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" 1 Km"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#fff"
+                android:textStyle="bold" />
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical" >
 
         <SeekBar
             android:id="@+id/seekBarArea"
@@ -40,11 +55,30 @@
 
     </LinearLayout>
 
-    <Button
-        android:layout_margin="16dp"
-        android:id="@+id/btnOk"
+    <View
+        android:id="@+id/view1"
+        android:layout_width="wrap_content"
+        android:background="#76c2af"
+        android:layout_height="1dp" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ok" />
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txtOk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:gravity="center"
+            android:textSize="25dp" />
+
+    </LinearLayout>
   
 </LinearLayout>
