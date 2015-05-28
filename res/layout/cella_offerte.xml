@@ -13,17 +13,17 @@
         android:orientation="vertical" >
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/imgOffers"
             android:layout_width="wrap_content"
             android:layout_height="170dp"
             android:scaleType="centerCrop"
             android:src="@drawable/sp" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/txtTileOf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="10dp"
             android:text="4 portate a scelta e vino"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold" />
@@ -42,7 +42,7 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/txtPlaceName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Al castello"
@@ -63,10 +63,11 @@
                     android:gravity="right" >
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/txtPreviusPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="56,20 €"
+                        android:gravity="center"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="#726e6e" />
 
@@ -80,7 +81,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/txtPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="39,20 €"

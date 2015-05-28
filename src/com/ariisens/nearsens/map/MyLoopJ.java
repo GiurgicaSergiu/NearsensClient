@@ -23,4 +23,8 @@ public class MyLoopJ {
 	public static String getSubCategories(){
 		return "http://nearsens.somee.com/api/subcategories";
 	}
+	
+	public static String getOffers(double lat,double lng,int raggioArea){
+		return "http://nearsens.somee.com/api/Offers?lat=" + lat + "&lng="+ lng + "&distanceLimit=" + raggioArea;
+	}
 }

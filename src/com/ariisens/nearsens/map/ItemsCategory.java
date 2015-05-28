@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.google.android.gms.games.leaderboard.Leaderboard;
-
 public class ItemsCategory {
 
 	public int mioId;
