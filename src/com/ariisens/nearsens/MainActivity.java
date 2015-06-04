@@ -36,7 +36,9 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_main);
+	
 		MyMainApplication.getInstance(this);
 		
 		listView = (ListView) findViewById(R.id.lvOffers);
@@ -83,6 +85,8 @@ public class MainActivity extends Activity {
 			}
 		});
 	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

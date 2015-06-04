@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -61,7 +60,9 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_map);
+		editActionBar();
 		
 		txtTipo = (TextView) findViewById(R.id.txtTipo);
 		txtCat = (TextView) findViewById(R.id.txtCat);
@@ -115,6 +116,11 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 
 	}
 
+	private void editActionBar() {
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
+	}
+	
 	@Override
 	protected void onResume() {
 
@@ -131,7 +137,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		getMenuInflater().inflate(R.menu.option_map, menu);
+		//getMenuInflater().inflate(R.menu.option_map, menu);
 		return true;
 	}
 
@@ -140,7 +146,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 
 		int id = item.getItemId();
 
-		if (id == R.id.listMap) {
+		if (id == android.R.id.home) {
 			onBackPressed();
 		}
 
