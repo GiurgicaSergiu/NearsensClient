@@ -79,8 +79,8 @@ public class MyAdapterOffers extends BaseAdapter {
 		
 		holder.title.setText("" + myItems.title);
 		holder.placeName.setText("" + myItems.placeName);
-		holder.prevousPrice.setText("" + myItems.previousPrice + " €");
-		holder.price.setText("" + myItems.price + " €");
+		holder.prevousPrice.setText("" + myItems.price + " €");
+		holder.price.setText("" + (myItems.price - (myItems.price*myItems.previousPrice)/100) + " €");
 		
 		try {
 			Glide.with(context).load("http://nearsens.somee.com//"+myItems.icon).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imgOffers);
