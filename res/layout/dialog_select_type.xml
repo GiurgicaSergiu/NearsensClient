@@ -13,7 +13,7 @@
         android:paddingLeft="5dp"
         android:paddingTop="10dp" >
 
-        <TextView
+       <com.ariisens.nearsens.customview.MyTextView
             android:id="@+id/txtSelectType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:orientation="vertical"
         android:padding="16dp" >
 
-        <TextView
+       <com.ariisens.nearsens.customview.MyTextView
             android:id="@+id/txtAll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
         android:orientation="vertical"
         android:padding="16dp" >
 
-        <TextView
+        <com.ariisens.nearsens.customview.MyTextView
             android:id="@+id/txtAC"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,12 +68,13 @@
         android:orientation="vertical"
         android:padding="16dp" >
 
-        <TextView
+        <com.ariisens.nearsens.customview.MyTextView
             android:id="@+id/txtPOI"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Punti di interesse"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
+
 
 </LinearLayout>

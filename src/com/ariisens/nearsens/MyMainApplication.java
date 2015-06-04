@@ -24,7 +24,7 @@ public class MyMainApplication extends Application {
 	}
 
 	public Typeface getTypeFace(){
-		return Typeface.createFromAsset(context.getAssets(), "pl.ttf");
+		return Typeface.createFromAsset(context.getAssets(), "roboto.ttf");
 	}
 
 	public Context getMyContext() {

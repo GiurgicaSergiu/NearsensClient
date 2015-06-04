@@ -15,6 +15,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.ariisens.nearsens.MyMainApplication;
 import com.ariisens.nearsens.R;
 import com.ariisens.nearsens.interfaces.IOptionMap;
 
@@ -56,13 +57,6 @@ public class DialogOption extends DialogFragment {
 		txtKmArea = (TextView) view.findViewById(R.id.txtKm);
 		txtRicerca = (TextView) view.findViewById(R.id.ricercaBar);
 		txtOk = (TextView) view.findViewById(R.id.txtOk);
-		
-		Typeface face = Typeface.createFromAsset(assetManager,
-	            "pl.ttf");
-		
-		txtKmArea.setTypeface(face);
-		txtRicerca.setTypeface(face);
-		txtOk.setTypeface(face);
 	
 		txtOk.setOnClickListener(new OnClickListener() {
 			

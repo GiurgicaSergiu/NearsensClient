@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
 		
 		raggioArea = 100;
 		
+		
 		MyLoopJ.getInstance().get(MyLoopJ.getOffers(lat, lng, raggioArea), new JsonHttpResponseHandler() {
 
 			@Override

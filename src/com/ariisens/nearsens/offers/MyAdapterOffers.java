@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 import com.ariisens.nearsens.R;
-
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 public class MyAdapterOffers extends BaseAdapter {
 
 	Context context;
@@ -80,8 +82,13 @@ public class MyAdapterOffers extends BaseAdapter {
 		holder.prevousPrice.setText("" + myItems.previousPrice + " €");
 		holder.price.setText("" + myItems.price + " €");
 		
-	
-		holder.imgOffers.setImageResource(images[position%4]);
+		try {
+			Glide.with(context).load("http://nearsens.somee.com//"+myItems.icon).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imgOffers);
+		} catch (Exception e) {
+			
+		}
+		
+		//holder.imgOffers.setImageResource(images[position%4]);
 	
 		//holder.name.setTypeface(MyMainApplication.getInstance(null).getTypeFace());
 		

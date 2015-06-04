@@ -64,7 +64,6 @@ public class MyAdapterCategory extends BaseAdapter {
 		
 		
 		holder.name.setText("" + myItems.name);
-		holder.name.setTypeface(MyMainApplication.getInstance(null).getTypeFace());
 		
 		return view;
 	}

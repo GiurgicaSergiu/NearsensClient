@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.ariisens.nearsens.MyMainApplication;
 import com.ariisens.nearsens.R;
 import com.ariisens.nearsens.interfaces.IOptionMap;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -27,7 +25,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 public class DialogSelectCategory extends DialogFragment {
 
 	public static final String DIALOG_TAG = "dialog_cat";
-	private TextView txtTitle;
 	private ListView listView;
 	private ArrayList<ItemsCategory> itemsCategories;
 
@@ -51,7 +48,7 @@ public class DialogSelectCategory extends DialogFragment {
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
 		View view = inflater.inflate(R.layout.dialog_select_category, null);
 		
-		txtTitle = (TextView) view.findViewById(R.id.txtTitleCategory);
+	
 		listView = (ListView) view.findViewById(R.id.lvCategories);
 		
 		MyLoopJ.getInstance().get(MyLoopJ.getSubCategories(), new JsonHttpResponseHandler() {
@@ -81,8 +78,7 @@ public class DialogSelectCategory extends DialogFragment {
 			}
 		});
 		
-		txtTitle.setTypeface(MyMainApplication.getInstance(null).getTypeFace());
-		
+	
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override

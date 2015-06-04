@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import com.ariisens.nearsens.MyMainApplication;
 import com.ariisens.nearsens.R;
 import com.ariisens.nearsens.interfaces.IOptionMap;
 
@@ -52,15 +53,6 @@ public class DialogSelectType extends DialogFragment {
 		txtAc = (TextView) view.findViewById(R.id.txtAC);
 		txtPOI = (TextView) view.findViewById(R.id.txtPOI);
 		txtAll = (TextView) view.findViewById(R.id.txtAll);
-
-		
-		Typeface tf = Typeface.createFromAsset(assetManager,
-	            "pl.ttf");
-		
-		txtSelectType.setTypeface(tf);
-		txtAc.setTypeface(tf);
-		txtPOI.setTypeface(tf);
-		txtAll.setTypeface(tf);
 		
 		txtAc.setOnClickListener(new OnClickListener() {
 			

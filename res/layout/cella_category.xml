@@ -10,7 +10,7 @@
         android:padding="16dp"
         android:orientation="vertical" >
 
-        <TextView
+        <com.ariisens.nearsens.customview.MyTextView
             android:id="@+id/txtItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

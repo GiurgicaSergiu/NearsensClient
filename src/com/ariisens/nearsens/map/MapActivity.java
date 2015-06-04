@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import com.ariisens.nearsens.MyMainApplication;
 import com.ariisens.nearsens.R;
 import com.ariisens.nearsens.interfaces.ICheckGPS;
 import com.ariisens.nearsens.interfaces.IOptionMap;
@@ -67,14 +68,6 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 		txtTipo = (TextView) findViewById(R.id.txtTipo);
 		txtCat = (TextView) findViewById(R.id.txtCat);
 		txtKm = (TextView) findViewById(R.id.txtKm);
-		
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "pl.ttf");
-		
-		txtCat.setTypeface(face);
-		txtKm.setTypeface(face);
-		txtTipo.setTypeface(face);
-		
 		
 		txtTipo.setOnClickListener(new OnClickListener() {
 			
