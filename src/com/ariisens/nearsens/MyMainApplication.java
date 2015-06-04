@@ -26,4 +26,14 @@ public class MyMainApplication extends Application {
 	public Typeface getTypeFace(){
 		return Typeface.createFromAsset(context.getAssets(), "pl.ttf");
 	}
+
+	public Context getMyContext() {
+		return context;
+	}
+
+	public void setMyContext(Context context) {
+		this.context = context;
+	}
+	
+	
 }

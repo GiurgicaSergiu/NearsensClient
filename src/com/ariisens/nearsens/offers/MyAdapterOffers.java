@@ -17,7 +17,7 @@ public class MyAdapterOffers extends BaseAdapter {
 	Context context;
 	ArrayList<ItemsOffers> items;
 	
-	private static int[] images = {R.drawable.ms,R.drawable.pesce,R.drawable.carne,R.drawable.usb};
+	private static int[] images = {R.drawable.ms,R.drawable.usb,R.drawable.pesce,R.drawable.carne};
 	
 	public MyAdapterOffers(Context context,ArrayList<ItemsOffers> data) {
 		this.context = context;

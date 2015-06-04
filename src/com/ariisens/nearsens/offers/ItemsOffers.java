@@ -6,13 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ariisens.nearsens.R;
-import com.ariisens.nearsens.map.ItemsCategory;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 public class ItemsOffers {
 	
 	public int id;
@@ -51,9 +44,9 @@ public class ItemsOffers {
 				String title = json_data.getString("Title");
 				int id = json_data.getInt("Id");
 				float price = json_data.getLong("Price");
-				float previousPrice = json_data.getLong("PreviousPrice");
+				float previousPrice = json_data.getLong("Discount");
 				String placeName = json_data.getString("PlaceName");
-				String icon = json_data.getString("Icon");
+				String icon = json_data.getString("MainPhoto");
 				
 				data.add(new ItemsOffers(id, title, price, previousPrice, icon, placeName, placeLat, placeLng));
 				

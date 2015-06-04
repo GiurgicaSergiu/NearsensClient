@@ -5,28 +5,33 @@ import java.util.ArrayList;
 import org.apache.http.Header;
 import org.json.JSONArray;
 
-import com.ariisens.nearsens.map.GPSTracker;
-import com.ariisens.nearsens.map.ItemsCategory;
-import com.ariisens.nearsens.map.MapActivity;
-import com.ariisens.nearsens.map.MyAdapterCategory;
-import com.ariisens.nearsens.map.MyLoopJ;
-import com.ariisens.nearsens.offers.ItemsOffers;
-import com.ariisens.nearsens.offers.MyAdapterOffers;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
+import com.ariisens.nearsens.map.GPSTracker;
+import com.ariisens.nearsens.map.MapActivity;
+import com.ariisens.nearsens.map.MyLoopJ;
+import com.ariisens.nearsens.notification.NotificationWithImage;
+import com.ariisens.nearsens.offers.ItemsOffers;
+import com.ariisens.nearsens.offers.MyAdapterOffers;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class MainActivity extends Activity {
 
 	private ListView listView;
 	private int raggioArea;
 	private ArrayList<ItemsOffers> itemsOffers;
+	
+	private static int[] images = {R.drawable.ms,R.drawable.usb,R.drawable.pesce,R.drawable.carne,};
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,15 @@ public class MainActivity extends Activity {
 				}.execute(response);
 				
 
+			}
+		});
+		
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				NotificationWithImage.putNotification(getApplicationContext(),itemsOffers.get(position).title,itemsOffers.get(position).placeName,images[position]);
 			}
 		});
 	}
