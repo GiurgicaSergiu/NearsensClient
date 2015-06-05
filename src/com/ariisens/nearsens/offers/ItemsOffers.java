@@ -6,9 +6,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ItemsOffers {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ItemsOffers implements Parcelable {
 	
-	public int id;
+	public long id;
     public String title;
     public float price;
     public float previousPrice;
@@ -16,8 +19,19 @@ public class ItemsOffers {
     public String placeName;
     public double placeLat;
     public double placeLng;
+    
+    public ItemsOffers(Parcel parcel) {
+    	this.id = parcel.readLong();
+		this.title = parcel.readString();
+		this.price = parcel.readFloat();
+		this.previousPrice = parcel.readFloat();
+		this.icon = parcel.readString();
+		this.placeName = parcel.readString();
+		this.placeLat = parcel.readDouble();
+		this.placeLng = parcel.readDouble();
+	}
 
-	public ItemsOffers(int id, String title,float price,float previousPrice,String icon,String placeName,double placeLat,double placeLng) {
+	public ItemsOffers(long id, String title,float price,float previousPrice,String icon,String placeName,double placeLat,double placeLng) {
 		this.id = id;
 		this.title = title;
 		this.price = price;
@@ -56,4 +70,34 @@ public class ItemsOffers {
 		}
 		return data;
 	}
+
+	@Override
+	public int describeContents() {
+		
+		return 0;
+	}
+
+	public void writeToParcel(Parcel parcel, int flags) {
+
+		    parcel.writeLong(id);
+			parcel.writeString(title);
+			parcel.writeFloat(price);;
+			parcel.writeFloat(previousPrice);
+			parcel.writeString(icon);;
+			parcel.writeString(placeName);
+			parcel.writeDouble(placeLat);
+			parcel.writeDouble(placeLng);
+		}
+
+		public static final Parcelable.Creator<ItemsOffers> CREATOR = new Parcelable.Creator<ItemsOffers>() {
+		         public ItemsOffers createFromParcel(Parcel in) 
+		         {
+		             return new ItemsOffers(in);
+		         }
+
+		         public ItemsOffers[] newArray (int size) 
+		         {
+		             return new ItemsOffers[size];
+		         }
+		    };
 }

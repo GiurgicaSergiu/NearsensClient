@@ -1,6 +1,7 @@
 package com.ariisens.nearsens.map;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -12,23 +13,25 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ariisens.nearsens.MyMainApplication;
 import com.ariisens.nearsens.R;
 import com.ariisens.nearsens.interfaces.ICheckGPS;
 import com.ariisens.nearsens.interfaces.IOptionMap;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -36,6 +39,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -51,6 +55,8 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 	private static int zoom = 12;
 	private GoogleMap myMap;
 	private ArrayList<MarkerOptions> myMarkers;
+	private HashMap<Marker, MyMarker> markersHashMap;
+	private ArrayList<MyMarker> myMarkersArray = new ArrayList<MyMarker>();
 	private Circle circle;
 	private String urlApiTipo;
 	private String urlApiCat;
@@ -182,9 +188,10 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 							}
 
 							protected void onPostExecute(Void result) {
-								for (MarkerOptions marker : myMarkers) {
+								/*for (MarkerOptions marker : myMarkers) {
 									myMap.addMarker(marker);
-								}
+								}*/
+								plotMarkers();
 
 							};
 
@@ -206,6 +213,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 	private void prepareListData(JSONArray response) {
 
 		JSONObject json_data = null;
+		markersHashMap = new HashMap<Marker, MyMarker>();
 
 		for (int i = 0; i < response.length(); i++) {
 			try {
@@ -218,6 +226,8 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 				double lat = json_data.getDouble("Lat");
 				double lng = json_data.getDouble("Lng");
 				String name = json_data.getString("Name");
+				String urlIcon = json_data.getString("Icon");
+				String id = json_data.getString("Id");
 
 				LatLng city = new LatLng(lat, lng);
 				
@@ -228,7 +238,8 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 				}else{
 					bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.mpoi);						
 				}
-
+		
+				myMarkersArray.add(new MyMarker(name, "http://nearsens.somee.com//Images\\b5223499-8d1f-418c-a1f5-a48a626ea6fa\\76\\ant"+(i + 2)+".jpg", lat, lng,id));
 				myMarkers.add(new MarkerOptions().title(name).position(city).icon(bitmapDescriptor));
 
 			} catch (JSONException e) {
@@ -298,4 +309,76 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 		txtCat.setText(value);
 		loadMyMap(myMap);
 	}
+	
+	 private void plotMarkers()
+	    {
+	        if(myMarkers.size() > 0)
+	        {
+	        	int i = 0;
+	            for (MyMarker myMarker : myMarkersArray)
+	            {
+
+	                Marker currentMarker = myMap.addMarker(myMarkers.get(i));
+	                markersHashMap.put(currentMarker, myMarker);
+	                
+	             
+	                i++;
+	            }
+	            myMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter());
+	            myMap.setOnMarkerClickListener(new OnMarkerClickListener() {
+
+	                @Override
+	                public boolean onMarkerClick(final Marker mark) {
+
+
+	                mark.showInfoWindow();
+
+	                    final Handler handler = new Handler();
+	                    handler.postDelayed(new Runnable() {
+	                        @Override
+	                        public void run() {
+	                            mark.showInfoWindow();
+
+	                        }
+	                    }, 200);
+
+	                    return true;
+	                }
+	            });
+	        }
+	    }
+	
+	public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter
+    {
+        public MarkerInfoWindowAdapter()
+        {
+        }
+
+		@Override
+		public View getInfoContents(Marker marker) {
+		
+			return null;
+		}
+
+		@Override
+		public View getInfoWindow(Marker marker) {
+			
+			 	View v  = getLayoutInflater().inflate(R.layout.infowindow_layout, null);
+
+			 	MyMarker myMarker = markersHashMap.get(marker);
+
+	            ImageView markerIcon = (ImageView) v.findViewById(R.id.marker_icon);
+
+	            TextView markerLabel = (TextView)v.findViewById(R.id.marker_label);
+	  
+				Glide.with(getApplicationContext()).load(myMarker.getmIcon()).centerCrop().into(markerIcon);
+	    	
+	           //markerIcon.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.carne));
+	            
+	            markerLabel.setText(myMarker.getmLabel());
+
+	            return v;
+		}
+		
+    }
 }

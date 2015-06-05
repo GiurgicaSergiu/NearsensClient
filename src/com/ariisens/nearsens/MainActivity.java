@@ -26,68 +26,81 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class MainActivity extends Activity {
 
+	private static final String PARSABLE = "parcable";
 	private ListView listView;
 	private int raggioArea;
 	private ArrayList<ItemsOffers> itemsOffers;
-	
-	private static int[] images = {R.drawable.ms,R.drawable.usb,R.drawable.pesce,R.drawable.carne,};
-	
+
+	private static int[] images = { R.drawable.ms, R.drawable.usb,
+			R.drawable.pesce, R.drawable.carne, };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_main);
-	
+
 		MyMainApplication.getInstance(this);
-		
+
 		listView = (ListView) findViewById(R.id.lvOffers);
-		
-		GPSTracker gpsTracker = new GPSTracker(this);
-		double lat = gpsTracker.getLatitude();
-		double lng = gpsTracker.getLongitude();
-		
-		raggioArea = 100;
-		
-		
-		MyLoopJ.getInstance().get(MyLoopJ.getOffers(lat, lng, raggioArea), new JsonHttpResponseHandler() {
 
-			@Override
-			public void onSuccess(int statusCode, Header[] headers,
-					JSONArray response) {
+		if (savedInstanceState == null) {
+			loadOffers();
+		} else {
+			itemsOffers = savedInstanceState.getParcelableArrayList(PARSABLE);
+			listView.setAdapter(new MyAdapterOffers(
+					getApplicationContext(), itemsOffers));
+		}
 
-				super.onSuccess(statusCode, headers, response);
-				
-				new AsyncTask<JSONArray, Void, Void>() {
-
-					@Override
-					protected Void doInBackground(JSONArray... params) {
-						itemsOffers = ItemsOffers.createArray(params[0]);
-						return null;
-					}
-
-					protected void onPostExecute(Void result) {
-						listView.setAdapter(new MyAdapterOffers(getApplicationContext(), itemsOffers));
-
-					};
-
-				}.execute(response);
-				
-
-			}
-		});
-		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				NotificationWithImage.putNotification(getApplicationContext(),itemsOffers.get(position).title,itemsOffers.get(position).placeName,images[position]);
+				NotificationWithImage.putNotification(getApplicationContext(),
+						itemsOffers.get(position).title,
+						itemsOffers.get(position).placeName, images[position]);
 			}
 		});
 	}
 
+	private void loadOffers() {
 
+		GPSTracker gpsTracker = new GPSTracker(this);
+		double lat = gpsTracker.getLatitude();
+		double lng = gpsTracker.getLongitude();
+
+		raggioArea = 100;
+
+		MyLoopJ.getInstance().get(MyLoopJ.getOffers(lat, lng, raggioArea),
+				new JsonHttpResponseHandler() {
+
+					@Override
+					public void onSuccess(int statusCode, Header[] headers,
+							JSONArray response) {
+
+						super.onSuccess(statusCode, headers, response);
+
+						new AsyncTask<JSONArray, Void, Void>() {
+
+							@Override
+							protected Void doInBackground(JSONArray... params) {
+								itemsOffers = ItemsOffers
+										.createArray(params[0]);
+								return null;
+							}
+
+							protected void onPostExecute(Void result) {
+								listView.setAdapter(new MyAdapterOffers(
+										getApplicationContext(), itemsOffers));
+
+							};
+
+						}.execute(response);
+
+					}
+				});
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,6 +127,13 @@ public class MainActivity extends Activity {
 	private void goToMap() {
 		Intent intent = new Intent(this, MapActivity.class);
 		startActivity(intent);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putParcelableArrayList(PARSABLE, itemsOffers);
 	}
 
 }

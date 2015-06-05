@@ -25,6 +25,6 @@ public class MyLoopJ {
 	}
 	
 	public static String getOffers(double lat,double lng,int raggioArea){
-		return "http://nearsens.somee.com/api/Offers?lat=" + lat + "&lng="+ lng + "&distanceLimit=" + raggioArea;
+		return "http://nearsens.somee.com/api/Offers?lat=" + lat + "&lng="+ lng + "&distanceLimit=" + raggioArea+"&page=1&pageSize=20";
 	}
 }
