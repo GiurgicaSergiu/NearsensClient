@@ -20,6 +20,7 @@ import com.ariisens.nearsens.map.GPSTracker;
 import com.ariisens.nearsens.map.MapActivity;
 import com.ariisens.nearsens.map.MyLoopJ;
 import com.ariisens.nearsens.notification.NotificationWithImage;
+import com.ariisens.nearsens.offerdetails.OfferDetailsActivity;
 import com.ariisens.nearsens.offers.ItemsOffers;
 import com.ariisens.nearsens.offers.MyAdapterOffers;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -57,9 +58,17 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				NotificationWithImage.putNotification(getApplicationContext(),
+				/*NotificationWithImage.putNotification(getApplicationContext(),
 						itemsOffers.get(position).title,
-						itemsOffers.get(position).placeName, images[position]);
+						itemsOffers.get(position).placeName, images[position]);*/
+				Intent intent = new Intent (MainActivity.this, OfferDetailsActivity.class);
+				intent.putExtra("title", itemsOffers.get(position).title);
+				intent.putExtra("place", itemsOffers.get(position).placeName);
+				intent.putExtra("discount", itemsOffers.get(position).previousPrice);
+				intent.putExtra("price", itemsOffers.get(position).price);
+				intent.putExtra("lat", itemsOffers.get(position).placeLat);
+				intent.putExtra("lng", itemsOffers.get(position).placeLng);
+				startActivity(intent);
 			}
 		});
 	}

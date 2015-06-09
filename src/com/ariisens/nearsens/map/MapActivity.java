@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,7 +23,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ariisens.nearsens.R;
@@ -191,6 +194,12 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 								/*for (MarkerOptions marker : myMarkers) {
 									myMap.addMarker(marker);
 								}*/
+								try {
+									Thread.sleep(2000);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 								plotMarkers();
 
 							};
@@ -226,7 +235,6 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 				double lat = json_data.getDouble("Lat");
 				double lng = json_data.getDouble("Lng");
 				String name = json_data.getString("Name");
-				String urlIcon = json_data.getString("Icon");
 				String id = json_data.getString("Id");
 
 				LatLng city = new LatLng(lat, lng);
@@ -238,8 +246,14 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 				}else{
 					bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.mpoi);						
 				}
+				
+				MyOffersJoinWithPlace data = new MyOffersJoinWithPlace();
+				data.setId(id);
+				data.setTitolo(name);
+				
+				createMyMarckersOffers(data);
 		
-				myMarkersArray.add(new MyMarker(name, "http://nearsens.somee.com//Images\\b5223499-8d1f-418c-a1f5-a48a626ea6fa\\76\\ant"+(i + 2)+".jpg", lat, lng,id));
+			//	myMarkersArray.add(new MyMarker(name, "http://nearsens.somee.com//Images\\b5223499-8d1f-418c-a1f5-a48a626ea6fa\\76\\ant"+(i + 2)+".jpg", lat, lng,id));
 				myMarkers.add(new MarkerOptions().title(name).position(city).icon(bitmapDescriptor));
 
 			} catch (JSONException e) {
@@ -247,6 +261,72 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 			}
 
 		}
+	}
+
+	private void createMyMarckersOffers(final MyOffersJoinWithPlace data) {
+		MyLoopJ.getInstanceSync().get(MyLoopJ.getOffertByPlaceId(data.getId()), new JsonHttpResponseHandler() {
+
+			
+			@Override
+			public void onSuccess(int statusCode, Header[] headers,
+					JSONArray response) {
+				
+				super.onSuccess(statusCode, headers, response);
+				
+				data.setResponseJsonObject(response);
+				new AsyncTask<MyOffersJoinWithPlace, Void, Void>() {
+
+					@Override
+					protected Void doInBackground(MyOffersJoinWithPlace... params) {
+						prepareOffersList(params[0]);
+						return null;
+					}
+
+				
+
+					protected void onPostExecute(Void result) {
+						/*for (MarkerOptions marker : myMarkers) {
+							myMap.addMarker(marker);
+						}*/
+						//plotMarkers();
+
+					};
+
+				}.execute(data);
+			}
+			
+			
+		});
+	}
+	private void prepareOffersList(MyOffersJoinWithPlace data) {
+	
+		JSONObject json_data = null;
+		markersHashMap = new HashMap<Marker, MyMarker>();
+
+		for (int i = 0; i < 1; i++) {
+			try {
+				json_data = data.getResponseJsonObject().getJSONObject(i);
+			} catch (JSONException e) {
+
+				e.printStackTrace();
+			}
+			try {
+				
+				String offertTitle = json_data.getString("Title");
+				String urlIcon = json_data.getString("Icon");
+				String id = json_data.getString("Id");
+				String title = data.getTitolo();
+				//String price = json_data.getString("Id");
+			//	String sconto = json_data.getString("Id");
+			//	String offertTitle = json_data.getString("Id");
+		
+				myMarkersArray.add(new MyMarker(title, urlIcon, "20","10",offertTitle,id));
+				
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	@Override
@@ -364,19 +444,29 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 		public View getInfoWindow(Marker marker) {
 			
 			 	View v  = getLayoutInflater().inflate(R.layout.infowindow_layout, null);
-
+			 	
+			 	
 			 	MyMarker myMarker = markersHashMap.get(marker);
 
 	            ImageView markerIcon = (ImageView) v.findViewById(R.id.marker_icon);
 
 	            TextView markerLabel = (TextView)v.findViewById(R.id.marker_label);
+	            
+	            TextView title = (TextView)v.findViewById(R.id.txtTitle);
+	            TextView price = (TextView)v.findViewById(R.id.txtPrezzo);
+	            TextView sconto = (TextView)v.findViewById(R.id.txtSconto);
 	  
-				Glide.with(getApplicationContext()).load(myMarker.getmIcon()).centerCrop().into(markerIcon);
+				Glide.with(getApplicationContext()).load("http://nearsens.somee.com//"+myMarker.getmIcon()).centerCrop().into(markerIcon);
 	    	
 	           //markerIcon.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.carne));
 	            
 	            markerLabel.setText(myMarker.getmLabel());
-
+	            
+	            title.setText(myMarker.getmOffersName());
+	            price.setText(myMarker.getmPrice());
+	            sconto.setText(myMarker.getmSconto());
+	            
+	            
 	            return v;
 		}
 		

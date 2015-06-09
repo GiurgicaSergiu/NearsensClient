@@ -45,6 +45,11 @@
         <activity
             android:name="com.ariisens.nearsens.map.MapActivity"
             android:label="@string/title_activity_map" >
+            
+        </activity>
+        <activity
+            android:name="com.ariisens.nearsens.offerdetails.OfferDetailsActivity"
+            android:label="Offers" >
         </activity>
     </application>
 
