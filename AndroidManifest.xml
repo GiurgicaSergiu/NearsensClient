@@ -40,7 +40,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCfY-wTZzgNYX_yZLgI_IKpx0Ot6t6p3M0" />
+            android:value="AIzaSyDqQggc0r8s_-x6IoaQnzWmlErmPMq-nZw" />
 
         <activity
             android:name="com.ariisens.nearsens.map.MapActivity"
