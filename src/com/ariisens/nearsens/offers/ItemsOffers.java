@@ -1,4 +1,4 @@
-package com.ariisens.nearsens.offers;
+ package com.ariisens.nearsens.offers;
 
 import java.util.ArrayList;
 

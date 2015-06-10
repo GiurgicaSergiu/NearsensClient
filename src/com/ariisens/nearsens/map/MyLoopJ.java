@@ -40,4 +40,8 @@ public class MyLoopJ {
 	public static String getOffertByPlaceId(String id){
 		return "http://nearsens.somee.com/api/offers?placeId=" + id;
 	}
+	
+	public static String getOfferDetails(long mId){
+		return "http://nearsens.somee.com/api/offers?id=" + mId;
+	}
 }

@@ -1,5 +1,6 @@
 package com.ariisens.nearsens;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import org.apache.http.Header;
@@ -7,6 +8,9 @@ import org.json.JSONArray;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -31,6 +35,8 @@ public class MainActivity extends Activity {
 	private ListView listView;
 	private int raggioArea;
 	private ArrayList<ItemsOffers> itemsOffers;
+	
+	Drawable imgHeader;
 
 	private static int[] images = { R.drawable.ms, R.drawable.usb,
 			R.drawable.pesce, R.drawable.carne, };
@@ -68,6 +74,9 @@ public class MainActivity extends Activity {
 				intent.putExtra("price", itemsOffers.get(position).price);
 				intent.putExtra("lat", itemsOffers.get(position).placeLat);
 				intent.putExtra("lng", itemsOffers.get(position).placeLng);
+				intent.putExtra("id", itemsOffers.get(position).id);
+				intent.putExtra("urlImgHeader", itemsOffers.get(position).icon);
+					            
 				startActivity(intent);
 			}
 		});
