@@ -1,16 +1,11 @@
 package com.ariisens.nearsens.offerdetails;
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.ariisens.nearsens.offers.ItemsOffers;
-
 public class ItemOfferDetails implements Parcelable {
 
 	public String description;
@@ -19,7 +14,7 @@ public class ItemOfferDetails implements Parcelable {
 	public String[] images;
 
 	public ItemOfferDetails(Parcel parcel) {
-
+	
 		this.description = parcel.readString();
 		this.link = parcel.readString();
 		this.startDate = parcel.readString();

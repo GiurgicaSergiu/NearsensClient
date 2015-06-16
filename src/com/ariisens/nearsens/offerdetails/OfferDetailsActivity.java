@@ -24,11 +24,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.bool;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -36,6 +39,7 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,9 +74,11 @@ public class OfferDetailsActivity extends Activity {
 	
     boolean isImageFitToScreen;
     
-    GridView gridView;
-	
+ 
+    boolean zoomOut = false;
 	BitmapDescriptor bitmapDescriptor;
+	
+	private Drawable mActionBarBackgroundDrawable;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +95,7 @@ public class OfferDetailsActivity extends Activity {
 		txtDescription = (TextView)findViewById(R.id.txtDesc);
 		txtScadenza = (TextView)findViewById(R.id.txtScadenza);
 		imgHeader = (ImageView)findViewById(R.id.imgHeader);
-		gridView = (GridView)findViewById(R.id.gridView);
+	
 		
 		
 		try {
@@ -106,20 +112,18 @@ public class OfferDetailsActivity extends Activity {
 		mLng= intent.getDoubleExtra("lng", 0);
 		
 	    jsonUrl = "http://nearsens.somee.com/api/offers/json?id=" + mId;
-
 		
 		new PassParameterAsync().execute();
-		new GetParamAsync().execute();
-		
-		//loadDetails();
-		
+				
 		setMap();
+		
+		
 		
 		imgHeader.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				
+				DialogImageEffect.getInstance("http://nearsens.somee.com//"+mUrl).show(getFragmentManager(), DialogImageEffect.DIALOG_TAG);
             }
 		});
 		
@@ -151,7 +155,6 @@ public class OfferDetailsActivity extends Activity {
 
 						txtDescription.setText(items.description);
 						txtScadenza.setText("Scade il: "+items.expirationDate);
-						gridView.setAdapter(new MyAdapterOfferDetails(getApplicationContext(), ItemOffersGridView.createArray(items.images)));
 					};
 
 				}.execute(response);
@@ -212,73 +215,6 @@ public class OfferDetailsActivity extends Activity {
 		
 	}
 	
-	class GetParamAsync extends AsyncTask<String, String, String> {
-		
-		InputStream inputStream = null;
-	    String result = ""; 
-
-	    JSONArray user = null;
-	    
-		@Override
-		protected void onPreExecute() {
-			
-			
-			super.onPreExecute();     
-            
-		}
-
-		@Override
-		protected String doInBackground(String... params) {		
-			
-			
-				
-			
-			
-			/*JSONObject json = null;
-	        String str = "";
-	        HttpResponse response;
-	        HttpClient myClient = new DefaultHttpClient();
-	        HttpPost myConnection = new HttpPost(jsonUrl);
-	         
-	        try {
-	            response = myClient.execute(myConnection);
-	            str = EntityUtils.toString(response.getEntity(), "UTF-8");
-	             
-	        } catch (ClientProtocolException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	         
-	         
-	        try{
-	            JSONArray jArray = new JSONArray(str);
-	            json = jArray.getJSONObject(0);
-	             
-	             
-	            mDescription=json.getString("Description");
-	            
-	             
-	             
-	        } catch ( JSONException e) {
-	            e.printStackTrace();                
-	        }*/
-	    
-			return null;
-	    }
-		
-		@Override
-		protected void onPostExecute(String result) {
-			txtDescription.setText(mDescription);
-		}	
-	}
-	
-	
-		
-	
-	
-	
-
 	
 	private void initilizeMap() {
         if (map == null) {
@@ -309,11 +245,42 @@ public class OfferDetailsActivity extends Activity {
 	
 	
 	private void editActionBar() {
-		
+		mActionBarBackgroundDrawable = getResources().getDrawable(R.drawable.bg_actionbar);
+		mActionBarBackgroundDrawable.setAlpha(0);
+		getActionBar().setBackgroundDrawable(mActionBarBackgroundDrawable);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
-	}
+		
+		 ((NotifyingScrollView) findViewById(R.id.scroll_view)).setOnScrollChangedListener(mOnScrollChangedListener);
 
+		 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			    mActionBarBackgroundDrawable.setCallback(mDrawableCallback);
+		}
+	}
+	
+	private NotifyingScrollView.OnScrollChangedListener mOnScrollChangedListener = new NotifyingScrollView.OnScrollChangedListener() {
+        public void onScrollChanged(ScrollView who, int l, int t, int oldl, int oldt) {
+            final int headerHeight = findViewById(R.id.imgHeader).getHeight() - getActionBar().getHeight();
+            final float ratio = (float) Math.min(Math.max(t, 0), headerHeight) / headerHeight;
+            final int newAlpha = (int) (ratio * 255);
+            mActionBarBackgroundDrawable.setAlpha(newAlpha);
+        }
+    };
+
+    private Drawable.Callback mDrawableCallback = new Drawable.Callback() {
+        @Override
+        public void invalidateDrawable(Drawable who) {
+            getActionBar().setBackgroundDrawable(who);
+        }
+
+        @Override
+        public void scheduleDrawable(Drawable who, Runnable what, long when) {
+        }
+
+        @Override
+        public void unscheduleDrawable(Drawable who, Runnable what) {
+        }
+    };
 	
 	
 	@Override
@@ -335,4 +302,7 @@ public class OfferDetailsActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	
+	
 }
+

@@ -13,5 +13,14 @@
         <item name="android:windowBackground">@android:color/holo_purple</item>
   
     </style>
+    
+  
+ <style name="Widget.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/bg_actionbar</item>
+    </style>
+
+    <style name="Widget.ActionBar.Transparent">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 
 </resources>
