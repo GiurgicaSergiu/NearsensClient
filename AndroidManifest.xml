@@ -52,6 +52,9 @@
             android:theme="@style/Theme.TranslucentActionBar.ActionBar.Overlay">
             android:label="Offers" >
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d7a20eb518ddebcc12043646ea585e785fbbe12e" />
     </application>
 
 </manifest>

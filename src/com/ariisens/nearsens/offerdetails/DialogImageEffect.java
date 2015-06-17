@@ -11,6 +11,8 @@ import android.widget.ImageView;
 
 
 
+import android.widget.LinearLayout;
+
 import com.ariisens.nearsens.R;
 import com.bumptech.glide.Glide;
 
@@ -21,6 +23,7 @@ public class DialogImageEffect extends DialogFragment {
 	private static final String URL = "img_url";
 	
 	private ImageView img;
+	private LinearLayout ll_effect;
 
 	public static DialogImageEffect getInstance(String url) {
 		DialogImageEffect dialog = new DialogImageEffect();
@@ -37,10 +40,13 @@ public class DialogImageEffect extends DialogFragment {
 		View view = inflater.inflate(R.layout.dialog_effect, null);
 
 		img = (ImageView) view.findViewById(R.id.img_effect);
+		ll_effect = (LinearLayout) view.findViewById(R.id.ll_effect);
+		
+		view.animate().translationY(500).setDuration(300);
 
 		Bundle bundle = getArguments();
 
-		Glide.with(this).load("http://nearsens.somee.com/"+bundle.getString(URL)).centerCrop().into(img);
+		//Glide.with(this).load("http://nearsens.somee.com/"+bundle.getString(URL)).centerCrop().into(img);
 
 		vBuilder.setView(view);
 

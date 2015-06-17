@@ -1,5 +1,7 @@
 package com.ariisens.nearsens;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
@@ -44,6 +46,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Fabric.with(this, new Crashlytics());
 
 		setContentView(R.layout.activity_main);
 
