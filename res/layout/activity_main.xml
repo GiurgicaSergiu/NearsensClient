@@ -5,14 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#e5e5e5"
-    android:padding="10dp"
     tools:context="${relativePackage}.${activityClass}" >
 
     <ListView
         android:id="@+id/lvOffers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       
+       android:divider="@null"
         tools:listitem="@layout/cella_offerte" >
 
     </ListView>

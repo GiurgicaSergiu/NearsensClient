@@ -8,6 +8,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 public class ItemOfferDetails implements Parcelable {
 
+	public String title;
+	public int discount;
+	public int price;
+	public String mainPhoto;
+	public String adress;
 	public String description;
 	public String link;
 	public String startDate, expirationDate;
@@ -21,16 +26,26 @@ public class ItemOfferDetails implements Parcelable {
 		this.expirationDate = parcel.readString();
 		this.images = new String[parcel.readInt()];
 		parcel.readStringArray(this.images);
+		this.title = parcel.readString();
+		this.discount = parcel.readInt();
+		this.price = parcel.readInt();
+		this.mainPhoto = parcel.readString();
+		this.adress = parcel.readString();
 	}
 
 	public ItemOfferDetails(String description, String link, String startDate,
-			String expirationDate, String[] images) {
+			String expirationDate, String[] images,String title,int discount,int price,String mainPhoto,String adress) {
 
 		this.description = description;
 		this.link = link;
 		this.startDate = startDate;
 		this.expirationDate = expirationDate;
 		this.images = images;
+		this.title = title;
+		this.discount = discount;
+		this.price = price;
+		this.mainPhoto = mainPhoto;
+		this.adress = adress;
 	}
 
 	public static ItemOfferDetails createDetail(JSONObject response) {
@@ -50,11 +65,21 @@ public class ItemOfferDetails implements Parcelable {
 					e.printStackTrace();
 				}
 			}
+			String link = json_data.getString("Link");
+			if(link.compareTo("null") == 0)
+				link = "Non disponibile";
 			itemOfferDetails = new ItemOfferDetails(
 					json_data.getString("Description"),
-					json_data.getString("Link"),
+					link,
 					json_data.getString("StartDate"),
-					json_data.getString("ExpirationDate"), urlImage);
+					json_data.getString("ExpirationDate"), 
+					urlImage,
+					json_data.getString("Title"),
+					json_data.getInt("Discount"),
+					json_data.getInt("Price"),
+					json_data.getString("MainPhoto"),
+					json_data.getString("PlaceAddress")
+					);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -77,6 +102,11 @@ public class ItemOfferDetails implements Parcelable {
 		parcel.writeString(expirationDate);
 		parcel.writeInt(images.length);
 		parcel.writeStringArray(images);
+		parcel.writeString(title);
+		parcel.writeInt(discount);
+		parcel.writeInt(price);
+		parcel.writeString(mainPhoto);
+		parcel.writeString(adress);
 
 	}
 

@@ -42,6 +42,6 @@ public class MyLoopJ {
 	}
 	
 	public static String getOfferDetails(long mId){
-		return "http://nearsens.somee.com/api/offers?id=" + mId;
+		return "http://nearsens.somee.com/api/offers/json?id=" + mId;
 	}
 }
