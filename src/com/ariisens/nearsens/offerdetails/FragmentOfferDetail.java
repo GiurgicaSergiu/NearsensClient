@@ -1,5 +1,21 @@
 package com.ariisens.nearsens.offerdetails;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.ariisens.nearsens.R;
 import com.ariisens.nearsens.offerdetails.DownloaderFragmentOfferDetail.DownloadListener;
 import com.bumptech.glide.Glide;
@@ -12,21 +28,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class FragmentOfferDetail extends Fragment{
 	
@@ -58,6 +59,8 @@ public class FragmentOfferDetail extends Fragment{
     private ItemOfferDetails itemOfferDetails;
     
     private LinearLayout llLoading;
+    
+    private String[] images;
     
     private DownloadListener listener = new DownloadListener() {
 
@@ -150,8 +153,20 @@ public class FragmentOfferDetail extends Fragment{
 		txtAdress = (TextView) v.findViewById(R.id.txtAddress);
 		txtLink = (TextView) v.findViewById(R.id.txtLink);
 		llLoading = (LinearLayout) v.findViewById(R.id.ll_load_detail_offer);
+		
+		inizializeEvent();
 	}
 	
+
+	private void inizializeEvent() {
+		imgHeader.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				FragmentImageFullScreen.getOrCreateFragment(getActivity().getFragmentManager(), "fragmentfullScreen",imgHeader.getDrawable(),images);			
+			}
+		});
+	}
 
 	protected void populateView(ItemOfferDetails result) {
 		llLoading.setVisibility(View.GONE);
@@ -167,6 +182,7 @@ public class FragmentOfferDetail extends Fragment{
 		txtLink.setText(result.link);
 		Glide.with(getActivity().getApplicationContext()).load("http://nearsens.somee.com//"+result.mainPhoto).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(imgHeader);
 		
+		images = result.images;
 	}
 
 	private void getMyArguments() {
