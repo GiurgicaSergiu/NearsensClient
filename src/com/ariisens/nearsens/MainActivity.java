@@ -1,7 +1,9 @@
 package com.ariisens.nearsens;
 
 import com.crashlytics.android.Crashlytics;
+
 import io.fabric.sdk.android.Fabric;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
@@ -24,7 +26,6 @@ import android.widget.ListView;
 
 import com.ariisens.nearsens.map.GPSTracker;
 import com.ariisens.nearsens.map.MapActivity;
-import com.ariisens.nearsens.map.MyLoopJ;
 import com.ariisens.nearsens.notification.NotificationWithImage;
 import com.ariisens.nearsens.offerdetails.OfferDetailsActivity;
 import com.ariisens.nearsens.offers.ItemsOffers;

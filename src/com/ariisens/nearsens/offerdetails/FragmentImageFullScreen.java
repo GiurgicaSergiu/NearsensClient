@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.ariisens.nearsens.R;
+import com.ariisens.nearsens.customview.TouchImageView;
 import com.bumptech.glide.Glide;
 
 public class FragmentImageFullScreen extends Fragment {

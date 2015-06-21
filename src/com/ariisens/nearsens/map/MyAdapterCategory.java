@@ -2,7 +2,6 @@ package com.ariisens.nearsens.map;
 
 import java.util.ArrayList;
 
-import com.ariisens.nearsens.MyMainApplication;
 import com.ariisens.nearsens.R;
 
 import android.content.Context;
@@ -57,12 +56,10 @@ public class MyAdapterCategory extends BaseAdapter {
 			
 		}
 		
-		
 		ItemsCategory myItems = items.get(position);
 		
 		ViewHolder holder = (ViewHolder) view.getTag();
-		
-		
+			
 		holder.name.setText("" + myItems.name);
 		
 		return view;

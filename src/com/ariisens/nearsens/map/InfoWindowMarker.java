@@ -1,31 +1,33 @@
 package com.ariisens.nearsens.map;
 
-public class MyMarker {
-	private String mLabel;
+public class InfoWindowMarker {
+	private String mTitle;
+	private String mDescription;
 	private String mIcon;
-	private String mPrice;
-	private String mSconto;
+	private int mPrice;
+	private int mSconto;
 	private String mOffersName;
 	private Double mLatitude;
 	private Double mLongitude;
 	private String mId;
 
-	public MyMarker(String label, String icon, String price, String sconto,
-			String offertName, String id) {
-		mLabel = label;
+	public InfoWindowMarker(String description, String icon, int price, int sconto,
+			String offertName, String id,String title) {
+		mDescription = description;
 		mIcon = icon;
 		mId = id;
 		mPrice = price;
 		mSconto = sconto;
 		mOffersName = offertName;
+		mTitle = title;
 	}
 
 	public String getmLabel() {
-		return mLabel;
+		return mDescription;
 	}
 
 	public void setmLabel(String mLabel) {
-		this.mLabel = mLabel;
+		this.mDescription = mLabel;
 	}
 
 	public String getmIcon() {
@@ -60,19 +62,19 @@ public class MyMarker {
 		this.mId = mId;
 	}
 
-	public String getmPrice() {
+	public int getmPrice() {
 		return mPrice;
 	}
 
-	public void setmPrice(String mPrice) {
+	public void setmPrice(int mPrice) {
 		this.mPrice = mPrice;
 	}
 
-	public String getmSconto() {
+	public int getmSconto() {
 		return mSconto;
 	}
 
-	public void setmSconto(String mSconto) {
+	public void setmSconto(int mSconto) {
 		this.mSconto = mSconto;
 	}
 
@@ -82,5 +84,21 @@ public class MyMarker {
 
 	public void setmOffersName(String mOffersName) {
 		this.mOffersName = mOffersName;
+	}
+
+	public String getmTitle() {
+		return mTitle;
+	}
+
+	public void setmTitle(String mTitle) {
+		this.mTitle = mTitle;
+	}
+
+	public String getmDescription() {
+		return mDescription;
+	}
+
+	public void setmDescription(String mDescription) {
+		this.mDescription = mDescription;
 	}
 }

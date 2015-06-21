@@ -1,4 +1,4 @@
-package com.ariisens.nearsens.offerdetails;
+package com.ariisens.nearsens.customview;
 
 import android.annotation.TargetApi;
 import android.content.Context;

@@ -24,7 +24,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal" >
 
-                <com.ariisens.nearsens.offerdetails.TouchImageView
+                <com.ariisens.nearsens.customview.TouchImageView
                     android:id="@+id/imgFull"
                     android:layout_width="match_parent"
                     android:layout_height="170dp"

@@ -2,7 +2,6 @@ package com.ariisens.nearsens.map;
 
 import com.ariisens.nearsens.interfaces.ICheckGPS;
 
-import android.R;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;

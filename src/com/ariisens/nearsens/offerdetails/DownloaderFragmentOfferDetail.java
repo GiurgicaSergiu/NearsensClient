@@ -3,7 +3,7 @@ package com.ariisens.nearsens.offerdetails;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
-import com.ariisens.nearsens.map.MyLoopJ;
+import com.ariisens.nearsens.MyLoopJ;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.app.Fragment;

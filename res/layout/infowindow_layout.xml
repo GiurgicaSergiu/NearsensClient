@@ -1,57 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:padding="5dp"
+    android:id="@+id/llInfoWindow"
     android:orientation="vertical" >
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        
         android:background="@drawable/bk_infowindow_marker" >
 
        
 
         <LinearLayout
             android:id="@+id/linearLayout1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
+            
+                android:paddingRight="12dp"
             android:background="@drawable/bk_ll_infowindow_marker"
             android:orientation="vertical" >
 
             <com.ariisens.nearsens.customview.MyTextView
-                android:id="@+id/marker_label"
-                android:layout_marginLeft="80dp"
-                android:layout_width="wrap_content"
+                android:id="@+id/txtPlaceName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Large Text"
-                
-                android:textColor="#fff"
+                android:layout_marginLeft="80dp"
                 android:padding="5dp"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#fff" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:paddingBottom="1dp"
+            
+             android:paddingRight="10dp"
             android:layout_below="@+id/linearLayout1"
             android:background="@drawable/bk_ll2_infowindow_marker"
             android:orientation="vertical" >
 
                <com.ariisens.nearsens.customview.MyTextView
-                        android:id="@+id/txtTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="80dp"
-               	android:paddingTop="1dp"
-               	android:paddingLeft="5dp"
-                android:textColor="#fff"
-                android:text="Large Text"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                   android:id="@+id/txtTitle"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="80dp"
+                   android:paddingLeft="5dp"
+                   android:paddingTop="1dp"
+                   android:singleLine="true"
+                   android:textAppearance="?android:attr/textAppearanceSmall"
+                   android:textColor="#fff" />
 
                <LinearLayout
                    android:layout_width="match_parent"
@@ -60,8 +65,7 @@
                         android:layout_marginLeft="80dp"
                             android:id="@+id/txtPrezzo"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Small Text"
+                            android:layout_height="wrap_content"                            
                             android:textColor="#fff"
                            android:paddingLeft="5dp"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -70,7 +74,6 @@
                             android:id="@+id/txtSconto"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Small Text"
                              android:layout_marginLeft="5dp"
                              android:textColor="#fff"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -79,11 +82,10 @@
         </LinearLayout>
         
          <ImageView
-             android:padding="2dp"
             android:id="@+id/marker_icon"
             android:layout_width="72dp"
-            android:paddingLeft="10dp"
-            android:layout_height="72dp"
+            android:layout_margin="3dp"
+            android:layout_height="62dp"
             android:background="@drawable/bk_img_marker"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"

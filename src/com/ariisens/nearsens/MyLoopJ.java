@@ -1,4 +1,4 @@
-package com.ariisens.nearsens.map;
+package com.ariisens.nearsens;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.SyncHttpClient;

@@ -16,8 +16,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.ariisens.nearsens.MyLoopJ;
 import com.ariisens.nearsens.R;
 import com.ariisens.nearsens.interfaces.IOptionMap;
 import com.loopj.android.http.JsonHttpResponseHandler;
