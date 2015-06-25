@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
+import com.ariisens.nearsens.MyLoopJ;
 import com.ariisens.nearsens.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -83,7 +84,7 @@ public class MyAdapterOffers extends BaseAdapter {
 		holder.price.setText("" + (myItems.price - (myItems.price*myItems.previousPrice)/100) + " €");
 		
 		try {
-			Glide.with(context).load("http://nearsens.somee.com//"+myItems.icon).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imgOffers);
+			Glide.with(context).load(MyLoopJ.BASE_URL + "/"+myItems.icon).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imgOffers);
 		} catch (Exception e) {
 			
 		}

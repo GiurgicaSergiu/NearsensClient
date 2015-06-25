@@ -23,8 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.ariisens.nearsens.MyLoopJ;
@@ -230,7 +228,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
                         mark.showInfoWindow();
 
                     }
-                }, 200);
+                }, 350);
 
                 return true;
             }
@@ -324,7 +322,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 	}
 
 	@Override
-	public void onMyBackPressed() {
+	public void onConfirmArea() {
 		
 		loadMyMap(myMap);
 	}
@@ -381,7 +379,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 	            TextView price = (TextView)v.findViewById(R.id.txtPrezzo);
 	            TextView sconto = (TextView)v.findViewById(R.id.txtSconto);
 	            
-	            Glide.with(getApplicationContext()).load("http://nearsens.somee.com//"+myMarker.getmIcon()).centerCrop().into(markerIcon);
+	            Glide.with(getApplicationContext()).load(MyLoopJ.BASE_URL + "/"+myMarker.getmIcon()).centerCrop().into(markerIcon);
 	    	
 	           //markerIcon.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.carne));
 	            

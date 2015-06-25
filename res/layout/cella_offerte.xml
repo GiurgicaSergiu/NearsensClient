@@ -25,6 +25,7 @@
             android:padding="10dp"
             android:text="4 portate a scelta e vino"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#000"
             android:textStyle="bold" />
 
         <LinearLayout

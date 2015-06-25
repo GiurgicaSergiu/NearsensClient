@@ -6,7 +6,85 @@
     android:orientation="vertical"
     android:background="#e5e5e5"
     tools:context="${relativePackage}.${activityClass}" >
+    
+ <LinearLayout
+        android:id="@+id/llMappa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#76c2af" >
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" >
+
+           <com.ariisens.nearsens.customview.MyTextView
+                android:id="@+id/txtTipo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scegli tipo"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#fff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" >
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:background="#fff"
+                 />
+
+           <com.ariisens.nearsens.customview.MyTextView
+                android:id="@+id/txtCat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Scegli categoria"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#fff" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:background="#fff"
+                 />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" >
+
+            <com.ariisens.nearsens.customview.MyTextView
+                android:id="@+id/txtKm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Km"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:textColor="#fff" />
+        </LinearLayout>
+    </LinearLayout>
+    
     <ListView
         android:id="@+id/lvOffers"
         android:layout_width="match_parent"

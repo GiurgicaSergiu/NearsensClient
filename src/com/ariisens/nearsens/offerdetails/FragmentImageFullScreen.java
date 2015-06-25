@@ -8,17 +8,16 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.StaticLayout;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.ariisens.nearsens.MyLoopJ;
 import com.ariisens.nearsens.R;
 import com.ariisens.nearsens.customview.TouchImageView;
 import com.bumptech.glide.Glide;
@@ -84,7 +83,7 @@ public class FragmentImageFullScreen extends Fragment {
 		    TouchImageView imgGenereted = new TouchImageView(getActivity());
 			imgGenereted.setLayoutParams(new LinearLayout.LayoutParams(width,(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getActivity().getResources().getDisplayMetrics())));
 			llImages.addView(imgGenereted);
-			Glide.with(getActivity().getApplicationContext()).load("http://nearsens.somee.com//"+images[i]).centerCrop().into(imgGenereted);
+			Glide.with(getActivity().getApplicationContext()).load(MyLoopJ.BASE_URL + "/"+images[i]).centerCrop().into(imgGenereted);
 		}
 	}
 

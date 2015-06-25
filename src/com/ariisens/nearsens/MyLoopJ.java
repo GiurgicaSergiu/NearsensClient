@@ -5,6 +5,8 @@ import com.loopj.android.http.SyncHttpClient;
 
 public class MyLoopJ {
 	
+	public final static String BASE_URL = "http://simonemorea-001-site1.smarterasp.net/"; 
+	
 	private static AsyncHttpClient client;
 	
 	private static SyncHttpClient clientSync;
@@ -26,22 +28,22 @@ public class MyLoopJ {
 	}
 	
 	public static String getPlaces(double lat,double lng,int raggioArea){
-		return "http://nearsens.somee.com/api/Places?lat=" + lat + "&lng="+ lng + "&distanceLimit=" + raggioArea;
+		return BASE_URL + "api/Places?lat=" + lat + "&lng="+ lng + "&distanceLimit=" + raggioArea;
 	}
 	
 	public static String getSubCategories(){
-		return "http://nearsens.somee.com/api/subcategories";
+		return BASE_URL + "api/subcategories";
 	}
 	
 	public static String getOffers(double lat,double lng,int raggioArea){
-		return "http://nearsens.somee.com/api/Offers?lat=" + lat + "&lng="+ lng + "&distanceLimit=" + raggioArea+"&page=1&pageSize=20";
+		return BASE_URL + "api/Offers?lat=" + lat + "&lng="+ lng + "&distanceLimit=" + raggioArea+"&page=1&pageSize=20";
 	}
 	
 	public static String getOffertByPlaceId(String id){
-		return "http://nearsens.somee.com/api/offers?placeId=" + id;
+		return BASE_URL + "api/offers?placeId=" + id;
 	}
 	
 	public static String getOfferDetails(long mId){
-		return "http://nearsens.somee.com/api/offers/json?id=" + mId;
+		return BASE_URL + "api/offers/json?id=" + mId;
 	}
 }

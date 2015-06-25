@@ -10,12 +10,6 @@
         android:title="CIAO"
         android:showAsAction="ifRoom"
       />
-    <item
-        android:id="@+id/action_filter"
-        android:orderInCategory="100"
-        android:icon="@drawable/filter"
-        android:title="CIAO"
-        android:showAsAction="ifRoom"
-      />
+ 
 
 </menu>

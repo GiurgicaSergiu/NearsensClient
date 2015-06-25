@@ -4,18 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.res.AssetManager;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.ariisens.nearsens.MyMainApplication;
 import com.ariisens.nearsens.R;
 import com.ariisens.nearsens.interfaces.IOptionMap;
 
@@ -25,9 +21,7 @@ public class DialogOption extends DialogFragment {
 	private static final String RAGGIO = "raggio";
 	private SeekBar areaBar;
 	private TextView txtKmArea;
-	private TextView txtRicerca;
 	private TextView txtOk;
-	private AssetManager assetManager;
 
 	public static DialogOption getInstance(int raggio) {
 		DialogOption dialog = new DialogOption();
@@ -43,7 +37,6 @@ public class DialogOption extends DialogFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		iOptionMap = (IOptionMap) activity;
-		assetManager = activity.getAssets();
 	}
 	
 	@Override
@@ -55,14 +48,13 @@ public class DialogOption extends DialogFragment {
 
 		areaBar = (SeekBar) view.findViewById(R.id.seekBarArea);
 		txtKmArea = (TextView) view.findViewById(R.id.txtKm);
-		txtRicerca = (TextView) view.findViewById(R.id.ricercaBar);
 		txtOk = (TextView) view.findViewById(R.id.txtOk);
 	
 		txtOk.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				iOptionMap.onMyBackPressed();
+				iOptionMap.onConfirmArea();
 				dismiss();
 			}
 		});

@@ -2,10 +2,22 @@
 
 import java.util.ArrayList;
 
+import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.ariisens.nearsens.MyLoopJ;
+import com.ariisens.nearsens.MyMainApplication;
+import com.ariisens.nearsens.database.MyContentProvider;
+import com.ariisens.nearsens.database.OffersTableHelper;
+import com.ariisens.nearsens.offerdetails.DownloaderFragmentOfferDetail;
+import com.ariisens.nearsens.offerdetails.ItemOfferDetails;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -42,9 +54,11 @@ public class ItemsOffers implements Parcelable {
 		this.placeLng = placeLng;
 	}
 	
-	public static ArrayList<ItemsOffers> createArray(JSONArray response){	
+	public static ArrayList<ItemsOffers> createArray(JSONArray response,final Context context){	
 		ArrayList<ItemsOffers> data = new ArrayList<ItemsOffers>();
 		JSONObject json_data = null;
+		context.getContentResolver().delete(MyContentProvider.OFFER_URI, null, null);
+		
 		for (int i = 0; i < response.length(); i++) {
 			try {
 				json_data = response.getJSONObject(i);
@@ -61,6 +75,56 @@ public class ItemsOffers implements Parcelable {
 				float previousPrice = json_data.getLong("Discount");
 				String placeName = json_data.getString("PlaceName");
 				String icon = json_data.getString("MainPhoto");
+				
+				ContentValues contentValues = new ContentValues();
+				contentValues.put(OffersTableHelper._ID, id);
+				contentValues.put(OffersTableHelper.PLACENAME, placeName);
+				context.getContentResolver().insert(MyContentProvider.OFFER_URI, contentValues);
+				
+				
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				MyLoopJ.getInstance().get(MyLoopJ.getOfferDetails(id), new JsonHttpResponseHandler() {
+
+					@Override
+					public void onSuccess(int statusCode, Header[] headers,
+							JSONObject response) {
+
+						super.onSuccess(statusCode, headers, response);
+						
+				
+						ContentValues contentValues = new ContentValues();
+						try {
+							contentValues.put(OffersTableHelper.STARTDATE,response.getString("StartDate"));
+							contentValues.put(OffersTableHelper.EXPIRATIONDATE,response.getString("ExpirationDate"));
+							contentValues.put(OffersTableHelper.DESCRIPTION,response.getString("Description"));
+							contentValues.put(OffersTableHelper.LINK,response.getString("Link"));
+							contentValues.put(OffersTableHelper.PRICE,response.getString("Price"));
+							contentValues.put(OffersTableHelper.DISCOUNT,response.getString("Discount"));
+							contentValues.put(OffersTableHelper.MAINPHOTO,response.getString("MainPhoto"));
+							contentValues.put(OffersTableHelper.IDPLACE,response.getString("IdPlace"));
+							contentValues.put(OffersTableHelper.PLACEADDRESS,response.getString("PlaceAddress"));
+							
+							context.getContentResolver().update(Uri.parse(MyContentProvider.OFFER_URI + "/" + response.getString("Id") ), contentValues, null, null);
+			
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+										
+					}
+					
+					@Override
+					public void onFailure(int statusCode, Header[] headers,
+							Throwable throwable, JSONObject errorResponse) {
+					
+						super.onFailure(statusCode, headers, throwable, errorResponse);
+						
+					}
+				});
 				
 				data.add(new ItemsOffers(id, title, price, previousPrice, icon, placeName, placeLat, placeLng));
 				

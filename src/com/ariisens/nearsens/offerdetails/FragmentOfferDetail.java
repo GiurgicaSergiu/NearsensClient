@@ -16,6 +16,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ariisens.nearsens.MyLoopJ;
 import com.ariisens.nearsens.R;
 import com.ariisens.nearsens.offerdetails.DownloaderFragmentOfferDetail.DownloadListener;
 import com.bumptech.glide.Glide;
@@ -180,7 +181,7 @@ public class FragmentOfferDetail extends Fragment{
 		txtScadenza.setText("L'offerta scade il " + result.expirationDate.split("T")[0]);
 		txtAdress.setText(result.adress);
 		txtLink.setText(result.link);
-		Glide.with(getActivity().getApplicationContext()).load("http://nearsens.somee.com//"+result.mainPhoto).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(imgHeader);
+		Glide.with(getActivity().getApplicationContext()).load(MyLoopJ.BASE_URL + "/"+result.mainPhoto).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(imgHeader);
 		
 		images = result.images;
 	}

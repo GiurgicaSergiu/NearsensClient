@@ -4,7 +4,6 @@ import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import org.apache.http.Header;
@@ -12,37 +11,51 @@ import org.json.JSONArray;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.ariisens.nearsens.interfaces.IOptionMap;
+import com.ariisens.nearsens.map.DialogOption;
+import com.ariisens.nearsens.map.DialogSelectCategory;
+import com.ariisens.nearsens.map.DialogSelectType;
 import com.ariisens.nearsens.map.GPSTracker;
 import com.ariisens.nearsens.map.MapActivity;
-import com.ariisens.nearsens.notification.NotificationWithImage;
 import com.ariisens.nearsens.offerdetails.OfferDetailsActivity;
 import com.ariisens.nearsens.offers.ItemsOffers;
 import com.ariisens.nearsens.offers.MyAdapterOffers;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements IOptionMap{
+	
+	private static final String URL_API = "url_api";
+	private static final String TIPO_VALUE = "url_val";
+	private static final String RAGGIO_VALUE = "raggio_area";
+	private static final String URL_API_CAT = "urls_cat";
+	private static final String CAT_VALUE = "cat_val";
 
 	private static final String PARSABLE = "parcable";
 	private ListView listView;
 	private int raggioArea;
 	private ArrayList<ItemsOffers> itemsOffers;
 	
-	Drawable imgHeader;
+	private TextView txtTipo;
+	private TextView txtCat;
+	private TextView txtKm;
 
-	private static int[] images = { R.drawable.ms, R.drawable.usb,
-			R.drawable.pesce, R.drawable.carne, };
+	
+	private String urlApiTipo;
+	private String urlApiCat;
+	
+	Drawable imgHeader;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,26 +64,15 @@ public class MainActivity extends Activity {
 
 		setContentView(R.layout.activity_main);
 
-		MyMainApplication.getInstance(this);
-
 		listView = (ListView) findViewById(R.id.lvOffers);
 
-		if (savedInstanceState == null) {
-			loadOffers();
-		} else {
-			itemsOffers = savedInstanceState.getParcelableArrayList(PARSABLE);
-			listView.setAdapter(new MyAdapterOffers(
-					getApplicationContext(), itemsOffers));
-		}
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				/*NotificationWithImage.putNotification(getApplicationContext(),
-						itemsOffers.get(position).title,
-						itemsOffers.get(position).placeName, images[position]);*/
+
 				Intent intent = new Intent (MainActivity.this, OfferDetailsActivity.class);
 				intent.putExtra(OfferDetailsActivity.PLACE, itemsOffers.get(position).placeName);
 				intent.putExtra(OfferDetailsActivity.LAT, itemsOffers.get(position).placeLat);
@@ -80,6 +82,57 @@ public class MainActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+		
+		createMenu();
+		
+
+		if (savedInstanceState == null) {
+			loadOffers();
+		} else {
+			itemsOffers = savedInstanceState.getParcelableArrayList(PARSABLE);
+			urlApiTipo = savedInstanceState.getString(URL_API);
+			urlApiCat = savedInstanceState.getString(URL_API_CAT);
+			txtCat.setText(savedInstanceState.getString(CAT_VALUE));
+			txtTipo.setText(savedInstanceState.getString(TIPO_VALUE));
+			raggioArea = savedInstanceState.getInt(RAGGIO_VALUE);
+			txtKm.setText(raggioArea + " Km");
+			listView.setAdapter(new MyAdapterOffers(
+					getApplicationContext(), itemsOffers));
+		}
+	}
+
+	private void createMenu() {
+		txtTipo = (TextView) findViewById(R.id.txtTipo);
+		txtCat = (TextView) findViewById(R.id.txtCat);
+		txtKm = (TextView) findViewById(R.id.txtKm);
+		
+		urlApiTipo = "";
+		urlApiCat = "";
+		raggioArea = 10;
+		
+		txtTipo.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DialogSelectType.getInstance().show(getFragmentManager(), DialogSelectType.DIALOG_TAG);
+			}
+		});
+		txtCat.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DialogSelectCategory.getInstance().show(getFragmentManager(), DialogSelectCategory.DIALOG_TAG);
+			}
+		});
+		txtKm.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DialogOption.getInstance(raggioArea).show(getFragmentManager(),
+						DialogOption.DIALOG_TAG);
+			}
+		});
+		
 	}
 
 	private void loadOffers() {
@@ -88,9 +141,7 @@ public class MainActivity extends Activity {
 		double lat = gpsTracker.getLatitude();
 		double lng = gpsTracker.getLongitude();
 
-		raggioArea = 100;
-
-		MyLoopJ.getInstance().get(MyLoopJ.getOffers(lat, lng, raggioArea),
+		MyLoopJ.getInstance().get(MyLoopJ.getOffers(lat, lng, raggioArea)+ urlApiTipo + urlApiCat,
 				new JsonHttpResponseHandler() {
 
 					@Override
@@ -99,22 +150,15 @@ public class MainActivity extends Activity {
 
 						super.onSuccess(statusCode, headers, response);
 
-						new AsyncTask<JSONArray, Void, Void>() {
-
-							@Override
-							protected Void doInBackground(JSONArray... params) {
+				
 								itemsOffers = ItemsOffers
-										.createArray(params[0]);
-								return null;
-							}
+										.createArray(response,getApplicationContext());
+								
 
-							protected void onPostExecute(Void result) {
 								listView.setAdapter(new MyAdapterOffers(
 										getApplicationContext(), itemsOffers));
 
-							};
-
-						}.execute(response);
+						
 
 					}
 				});
@@ -135,9 +179,7 @@ public class MainActivity extends Activity {
 			goToMap();
 			return true;
 		} else {
-			if (id == R.id.action_filter) {
-				return true;
-			}
+			
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -152,6 +194,37 @@ public class MainActivity extends Activity {
 		super.onSaveInstanceState(outState);
 
 		outState.putParcelableArrayList(PARSABLE, itemsOffers);
+		outState.putString(URL_API, urlApiTipo);
+		outState.putString(TIPO_VALUE, txtTipo.getText().toString());
+		outState.putString(URL_API_CAT, urlApiCat);
+		outState.putString(CAT_VALUE, txtCat.getText().toString());
+		outState.putInt(RAGGIO_VALUE, raggioArea);
+	}
+
+	@Override
+	public void updateRaggio(int raggio) {
+		raggioArea = raggio;
+		txtKm.setText(raggioArea + " Km");
+
+	}
+
+	@Override
+	public void onConfirmArea() {
+		loadOffers();
+	}
+
+	@Override
+	public void updateTipo(String tipo, String value) {
+		urlApiTipo = tipo;
+		txtTipo.setText(value);
+		loadOffers();
+	}
+
+	@Override
+	public void updateCategory(String cat, String value) {
+		urlApiCat = cat;
+		txtCat.setText(value);
+		loadOffers();
 	}
 
 }
