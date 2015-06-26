@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -19,6 +18,8 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,7 +46,7 @@ import com.ariisens.nearsens.offers.ItemsOffers;
 import com.ariisens.nearsens.offers.MyCursorAdapterOffers;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,IOption,ILoadOffers{
+public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,IOption,ILoadOffers,SwipeRefreshLayout.OnRefreshListener{
 	
 	private static final String URL_API = "url_api";
 	private static final String TIPO_VALUE = "url_val";
@@ -69,6 +70,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 	private static final int ITEMS_LOADER_ID = 203;
 
 	private MyCursorAdapterOffers adapter;
+	private SwipeRefreshLayout swipeLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,12 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 		listView = (ListView) findViewById(R.id.lvOffers);
 		llLoadingOffers = (LinearLayout) findViewById(R.id.ll_Loading_offers);
 		
+		swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+	    swipeLayout.setOnRefreshListener(this);
+	    swipeLayout.setColorScheme(android.R.color.holo_blue_bright, 
+	            android.R.color.holo_green_light, 
+	            android.R.color.holo_orange_light, 
+	            android.R.color.holo_red_light);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -113,6 +121,11 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 		}
 		
 		getLoaderManager().initLoader(ITEMS_LOADER_ID, null, this);
+	}
+	
+	@Override 
+	public void onRefresh() {
+	    loadOffers();
 	}
 
 	protected void goToDetail(long id) {
@@ -188,7 +201,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 							JSONArray response) {
 
 						super.onSuccess(statusCode, headers, response);
-						InsertDataInDb.insert(response, getApplicationContext(), MainActivity.this);
+						InsertDataInDb.insertOffers(response, getApplicationContext(), MainActivity.this);
 					}
 
 					@Override
@@ -307,6 +320,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 		llLoadingOffers.setVisibility(View.GONE);
 		llLoadingOffers.removeAllViews();
 		listView.setAdapter(adapter);
+		swipeLayout.setRefreshing(false);
 	}
 
 }

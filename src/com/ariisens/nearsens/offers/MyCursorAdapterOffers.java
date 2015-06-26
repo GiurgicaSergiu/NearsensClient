@@ -12,6 +12,11 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,19 +37,18 @@ public class MyCursorAdapterOffers extends CursorAdapter {
 		int price = cursor.getColumnIndex(OffersTableHelper.PRICE);
 		int img = cursor.getColumnIndex(OffersTableHelper.MAINPHOTO);
 		
-
 		ViewHolder holder = (ViewHolder) view.getTag();
-		
 		
 		holder.title.setText("" + cursor.getString(title));
 		holder.placeName.setText("" + cursor.getString(placeName));
 		holder.prevousPrice.setText("" + cursor.getFloat(price) + " €");
 		holder.price.setText("" + (cursor.getFloat(price) - (cursor.getFloat(price)*cursor.getFloat(discount))/100) + " €");
 		//ObjectAnimator.ofFloat(holder.ll, "translationX", -200, 0).setDuration(600).start();
-		ObjectAnimator.ofFloat(holder.ll, "scaleX", 0.2f, 1.0f).setDuration(600)
+		ObjectAnimator.ofFloat(holder.ll, "scaleX", 0.2f, 1.0f).setDuration(500)
 		.start();
-		ObjectAnimator.ofFloat(holder.ll, "scaleY", 0.2f, 1.0f).setDuration(600)
+		ObjectAnimator.ofFloat(holder.ll, "scaleY", 0.2f, 1.0f).setDuration(500)
 		.start();
+	
 		
 		try {
 			Glide.with(context).load(MyLoopJ.BASE_URL + "/"+cursor.getString(img)).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imgOffers);

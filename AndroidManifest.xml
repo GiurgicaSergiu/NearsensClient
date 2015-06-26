@@ -50,7 +50,7 @@
         </activity>
         <activity
             android:name="com.ariisens.nearsens.offerdetails.OfferDetailsActivity"
-            android:theme="@style/Theme.TranslucentActionBar.ActionBar.Overlay">
+            android:theme="@style/Theme.TranslucentActionBar.ActionBar.Overlay"
             android:label="Offers" >
         </activity>
         <meta-data
