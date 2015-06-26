@@ -15,6 +15,7 @@ public class MyContentProvider extends ContentProvider {
 
 	public static final String OFFERS_PATH = "offers";
 	public static final String PHOTOS_PATH = "photos";
+	public static final String SUBCATEGORIES_PATH = "subcategories";
 
 	public static final Uri OFFER_URI = Uri
 			.parse(ContentResolver.SCHEME_CONTENT + "://" + AUTHORITY + "/"
@@ -22,12 +23,18 @@ public class MyContentProvider extends ContentProvider {
 	public static final Uri PHOTO_URI = Uri
 			.parse(ContentResolver.SCHEME_CONTENT + "://" + AUTHORITY + "/"
 					+ PHOTOS_PATH);
+	public static final Uri SUBCATEGORIES_URI = Uri
+			.parse(ContentResolver.SCHEME_CONTENT + "://" + AUTHORITY + "/"
+					+ SUBCATEGORIES_PATH);
 	
 	private static final int FULL_OFFERS_TABLE = 1;
 	private static final int SINGLE_OFFER = 101;
 	
 	private static final int FULL_PHOTOS_TABLE = 2;
 	private static final int SINGLE_PHOTO = 102;
+	
+	private static final int FULL_SUBCATEGORIES_TABLE = 3;
+	private static final int SINGLE_SUBCATEGORY = 103;
 
 	private static final UriMatcher URI_MATCHER = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -37,6 +44,8 @@ public class MyContentProvider extends ContentProvider {
 		URI_MATCHER.addURI(AUTHORITY, OFFERS_PATH + "/#", SINGLE_OFFER);
 		URI_MATCHER.addURI(AUTHORITY, PHOTOS_PATH, FULL_PHOTOS_TABLE);
 		URI_MATCHER.addURI(AUTHORITY, PHOTOS_PATH + "/#", SINGLE_PHOTO);
+		URI_MATCHER.addURI(AUTHORITY, SUBCATEGORIES_PATH, FULL_SUBCATEGORIES_TABLE);
+		URI_MATCHER.addURI(AUTHORITY, SUBCATEGORIES_PATH + "/#", SINGLE_SUBCATEGORY);
 	}
 
 	private DbHelper helper;
@@ -106,6 +115,14 @@ public class MyContentProvider extends ContentProvider {
 			getContext().getContentResolver().notifyChange(uri, null);
 
 			return Uri.parse(OFFER_URI + "/" + result);
+		case FULL_SUBCATEGORIES_TABLE:
+			database = helper.getWritableDatabase();
+			result = database
+					.insert(SubcategoriesTableHelper.TABLE_NAME, null, values);
+
+			getContext().getContentResolver().notifyChange(uri, null);
+
+			return Uri.parse(SUBCATEGORIES_URI + "/" + result);
 
 		default:
 			return null;
@@ -134,6 +151,14 @@ public class MyContentProvider extends ContentProvider {
 		case SINGLE_PHOTO:
 			queryBuilder.setTables(PhotosOffersTableHelper.TABLE_NAME);
 			queryBuilder.appendWhere(PhotosOffersTableHelper._ID + "="
+					+ uri.getLastPathSegment());
+			break;
+		case FULL_SUBCATEGORIES_TABLE:
+			queryBuilder.setTables(SubcategoriesTableHelper.TABLE_NAME);
+			break;
+		case SINGLE_SUBCATEGORY:
+			queryBuilder.setTables(SubcategoriesTableHelper.TABLE_NAME);
+			queryBuilder.appendWhere(SubcategoriesTableHelper._ID + "="
 					+ uri.getLastPathSegment());
 			break;
 

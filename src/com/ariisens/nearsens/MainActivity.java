@@ -40,7 +40,7 @@ import com.ariisens.nearsens.map.DialogSelectType;
 import com.ariisens.nearsens.map.GPSTracker;
 import com.ariisens.nearsens.map.MapActivity;
 import com.ariisens.nearsens.offerdetails.OfferDetailsActivity;
-import com.ariisens.nearsens.offers.InsertOfferOnDb;
+import com.ariisens.nearsens.offers.InsertDataInDb;
 import com.ariisens.nearsens.offers.ItemsOffers;
 import com.ariisens.nearsens.offers.MyCursorAdapterOffers;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -188,7 +188,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 							JSONArray response) {
 
 						super.onSuccess(statusCode, headers, response);
-						InsertOfferOnDb.insert(response, getApplicationContext(), MainActivity.this);
+						InsertDataInDb.insert(response, getApplicationContext(), MainActivity.this);
 					}
 
 					@Override

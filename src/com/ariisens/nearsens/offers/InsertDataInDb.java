@@ -15,20 +15,25 @@ import com.ariisens.nearsens.database.PhotosOffersTableHelper;
 import com.ariisens.nearsens.interfaces.ILoadOffers;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class InsertOfferOnDb {
+public class InsertDataInDb {
 	
 	private static int total;
 	
-	public static void insert(final JSONArray r,final Context context,final ILoadOffers loadOffers){	
+	public static void insertSubcategories(String[] subcategories, Context context) {
+		context.getContentResolver().delete(MyContentProvider.SUBCATEGORIES_URI, null, null);
+		
+	}
+	
+	public static void insertOffers(final JSONArray offers,final Context context,final ILoadOffers loadOffers){	
 		
 		JSONObject json_data = null;
 		total = 0;
 		
 		context.getContentResolver().delete(MyContentProvider.OFFER_URI, null, null);
 		context.getContentResolver().delete(MyContentProvider.PHOTO_URI, null, null);
-		for (int i = 0; i < r.length(); i++) {
+		for (int i = 0; i < offers.length(); i++) {
 			try {
-				json_data = r.getJSONObject(i);
+				json_data = offers.getJSONObject(i);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -74,7 +79,7 @@ public class InsertOfferOnDb {
 								context.getContentResolver().insert(MyContentProvider.PHOTO_URI, cv);
 							}
 							total++;
-							if(total>=r.length()){
+							if(total>=offers.length()){
 								loadOffers.finishOperation();
 							}
 						} catch (JSONException e) {
