@@ -8,33 +8,44 @@ import java.util.ArrayList;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
+import android.content.Loader;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.ariisens.nearsens.interfaces.IOptionMap;
+import com.ariisens.nearsens.database.DbHelper;
+import com.ariisens.nearsens.database.MyContentProvider;
+import com.ariisens.nearsens.database.OffersTableHelper;
+import com.ariisens.nearsens.interfaces.ILoadOffers;
+import com.ariisens.nearsens.interfaces.IOption;
 import com.ariisens.nearsens.map.DialogOption;
 import com.ariisens.nearsens.map.DialogSelectCategory;
 import com.ariisens.nearsens.map.DialogSelectType;
 import com.ariisens.nearsens.map.GPSTracker;
 import com.ariisens.nearsens.map.MapActivity;
 import com.ariisens.nearsens.offerdetails.OfferDetailsActivity;
+import com.ariisens.nearsens.offers.InsertOfferOnDb;
 import com.ariisens.nearsens.offers.ItemsOffers;
-import com.ariisens.nearsens.offers.MyAdapterOffers;
+import com.ariisens.nearsens.offers.MyCursorAdapterOffers;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class MainActivity extends Activity implements IOptionMap{
+public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,IOption,ILoadOffers{
 	
 	private static final String URL_API = "url_api";
 	private static final String TIPO_VALUE = "url_val";
@@ -50,22 +61,26 @@ public class MainActivity extends Activity implements IOptionMap{
 	private TextView txtTipo;
 	private TextView txtCat;
 	private TextView txtKm;
-
+	private LinearLayout llLoadingOffers;
 	
 	private String urlApiTipo;
 	private String urlApiCat;
 	
-	Drawable imgHeader;
+	private static final int ITEMS_LOADER_ID = 203;
+
+	private MyCursorAdapterOffers adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Fabric.with(this, new Crashlytics());
+		
+		//Fabric.with(this, new Crashlytics());
 
 		setContentView(R.layout.activity_main);
 
 		listView = (ListView) findViewById(R.id.lvOffers);
-
+		llLoadingOffers = (LinearLayout) findViewById(R.id.ll_Loading_offers);
+		
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -73,32 +88,56 @@ public class MainActivity extends Activity implements IOptionMap{
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 
-				Intent intent = new Intent (MainActivity.this, OfferDetailsActivity.class);
-				intent.putExtra(OfferDetailsActivity.PLACE, itemsOffers.get(position).placeName);
-				intent.putExtra(OfferDetailsActivity.LAT, itemsOffers.get(position).placeLat);
-				intent.putExtra(OfferDetailsActivity.LON, itemsOffers.get(position).placeLng);
-				intent.putExtra(OfferDetailsActivity.ID_OFFER, itemsOffers.get(position).id);
-					            
-				startActivity(intent);
+				goToDetail(id);
+			
 			}
 		});
 		
 		createMenu();
 		
-
+		adapter = new MyCursorAdapterOffers(this, null);
+		
 		if (savedInstanceState == null) {
+			llLoadingOffers.bringToFront();
 			loadOffers();
+			
 		} else {
-			itemsOffers = savedInstanceState.getParcelableArrayList(PARSABLE);
+			llLoadingOffers.removeAllViews();
 			urlApiTipo = savedInstanceState.getString(URL_API);
 			urlApiCat = savedInstanceState.getString(URL_API_CAT);
 			txtCat.setText(savedInstanceState.getString(CAT_VALUE));
 			txtTipo.setText(savedInstanceState.getString(TIPO_VALUE));
 			raggioArea = savedInstanceState.getInt(RAGGIO_VALUE);
 			txtKm.setText(raggioArea + " Km");
-			listView.setAdapter(new MyAdapterOffers(
-					getApplicationContext(), itemsOffers));
+			listView.setAdapter(adapter);
 		}
+		
+		getLoaderManager().initLoader(ITEMS_LOADER_ID, null, this);
+	}
+
+	protected void goToDetail(long id) {
+		DbHelper dbHelper = new DbHelper(this);
+		String query = "SELECT  * FROM " + OffersTableHelper.TABLE_NAME + " WHERE " + OffersTableHelper._ID + " = " + id;
+
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		Cursor cursor = db.rawQuery(query, null);
+
+		int placeName = cursor.getColumnIndex(OffersTableHelper.PLACENAME);
+		int placeLat = cursor.getColumnIndex(OffersTableHelper.PLACELAT);
+		int plageLng = cursor.getColumnIndex(OffersTableHelper.PLACELNG);
+		int _id = cursor.getColumnIndex(OffersTableHelper._ID);
+
+		cursor.moveToFirst();
+		Intent intent = new Intent (MainActivity.this, OfferDetailsActivity.class);
+		intent.putExtra(OfferDetailsActivity.PLACE, cursor.getString(placeName));
+		intent.putExtra(OfferDetailsActivity.LAT, cursor.getFloat(placeLat));
+		intent.putExtra(OfferDetailsActivity.LON, cursor.getFloat(plageLng));
+		intent.putExtra(OfferDetailsActivity.ID_OFFER, cursor.getInt(_id));
+		cursor.close();
+			            
+		startActivity(intent);
+		
 	}
 
 	private void createMenu() {
@@ -108,7 +147,7 @@ public class MainActivity extends Activity implements IOptionMap{
 		
 		urlApiTipo = "";
 		urlApiCat = "";
-		raggioArea = 10;
+		raggioArea = 100;
 		
 		txtTipo.setOnClickListener(new OnClickListener() {
 			
@@ -149,18 +188,29 @@ public class MainActivity extends Activity implements IOptionMap{
 							JSONArray response) {
 
 						super.onSuccess(statusCode, headers, response);
-
-				
-								itemsOffers = ItemsOffers
-										.createArray(response,getApplicationContext());
-								
-
-								listView.setAdapter(new MyAdapterOffers(
-										getApplicationContext(), itemsOffers));
-
-						
-
+						InsertOfferOnDb.insert(response, getApplicationContext(), MainActivity.this);
 					}
+
+					@Override
+					public void onFailure(int statusCode, Header[] headers,
+							Throwable throwable, JSONArray errorResponse) {
+						super.onFailure(statusCode, headers, throwable, errorResponse);
+						finishOperation();
+					}
+
+					@Override
+					public void onFailure(int statusCode, Header[] headers,
+							String responseString, Throwable throwable) {
+						super.onFailure(statusCode, headers, responseString, throwable);
+					}
+
+					@Override
+					public void onFailure(int statusCode, Header[] headers,
+							Throwable throwable, JSONObject errorResponse) {			
+						super.onFailure(statusCode, headers, throwable, errorResponse);
+						finishOperation();
+					}
+					
 				});
 	}
 
@@ -225,6 +275,38 @@ public class MainActivity extends Activity implements IOptionMap{
 		urlApiCat = cat;
 		txtCat.setText(value);
 		loadOffers();
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		CursorLoader loader = null;
+		switch (id) {
+		case ITEMS_LOADER_ID:
+			loader = new CursorLoader(this, MyContentProvider.OFFER_URI, null,
+					null, null, null);
+			break;
+		default:
+			break;
+		}
+
+		return loader;
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		adapter.swapCursor(cursor);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		adapter.swapCursor(null);
+	}
+
+	@Override
+	public void finishOperation() {
+		llLoadingOffers.setVisibility(View.GONE);
+		llLoadingOffers.removeAllViews();
+		listView.setAdapter(adapter);
 	}
 
 }

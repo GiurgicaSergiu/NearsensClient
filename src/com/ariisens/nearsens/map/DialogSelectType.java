@@ -11,7 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.ariisens.nearsens.R;
-import com.ariisens.nearsens.interfaces.IOptionMap;
+import com.ariisens.nearsens.interfaces.IOption;
 
 public class DialogSelectType extends DialogFragment {
 
@@ -27,12 +27,12 @@ public class DialogSelectType extends DialogFragment {
 		return dialog;
 	}
 
-	IOptionMap iOptionMap;
+	IOption iOptionMap;
 	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		iOptionMap = (IOptionMap) activity;
+		iOptionMap = (IOption) activity;
 	}
 	
 	@Override

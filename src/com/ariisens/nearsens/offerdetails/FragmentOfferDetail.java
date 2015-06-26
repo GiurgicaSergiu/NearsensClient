@@ -2,6 +2,8 @@ package com.ariisens.nearsens.offerdetails;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -18,6 +20,9 @@ import android.widget.Toast;
 
 import com.ariisens.nearsens.MyLoopJ;
 import com.ariisens.nearsens.R;
+import com.ariisens.nearsens.database.DbHelper;
+import com.ariisens.nearsens.database.OffersTableHelper;
+import com.ariisens.nearsens.database.PhotosOffersTableHelper;
 import com.ariisens.nearsens.offerdetails.DownloaderFragmentOfferDetail.DownloadListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -63,6 +68,8 @@ public class FragmentOfferDetail extends Fragment{
     
     private String[] images;
     
+    private int idOffer;
+    
     private DownloadListener listener = new DownloadListener() {
 
 		@Override
@@ -78,12 +85,12 @@ public class FragmentOfferDetail extends Fragment{
 		
 	};
 
-	public static FragmentOfferDetail getOrCreateFragment(FragmentManager fragmentManager, String tag,long id,double lat,double lon,String place) {
+	public static FragmentOfferDetail getOrCreateFragment(FragmentManager fragmentManager, String tag,int id,double lat,double lon,String place) {
 		FragmentOfferDetail fragment = (FragmentOfferDetail) fragmentManager.findFragmentByTag(tag);
 		if (fragment == null) {
 			fragment = new FragmentOfferDetail();
 			Bundle bundle = new Bundle();
-			bundle.putLong(ID_OFFER, id);
+			bundle.putInt(ID_OFFER, id);
 			bundle.putDouble(LAT_OFFER, lat);
 			bundle.putDouble(LON_OFFER, lon);
 			bundle.putString(PLACE_NAME, place);
@@ -105,7 +112,18 @@ public class FragmentOfferDetail extends Fragment{
         
         getMyArguments();
         
-        controllMyLoadData(savedInstanceState);
+        //controllMyLoadData(savedInstanceState);
+        
+        DbHelper dbHelper = new DbHelper(getActivity());
+		String query = "SELECT  * FROM " + OffersTableHelper.TABLE_NAME + " WHERE " + OffersTableHelper._ID + " = " + idOffer;
+
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		Cursor cursor = db.rawQuery(query, null);
+		
+		cursor.moveToFirst();
+        
+        populateView(cursor);
         
         editActionBar(view);
         
@@ -114,7 +132,7 @@ public class FragmentOfferDetail extends Fragment{
 		return view;
 	}
 
-	private void controllMyLoadData(Bundle primoAvvio) {
+	/*private void controllMyLoadData(Bundle primoAvvio) {
 		fragment = DownloaderFragmentOfferDetail.getOrCreateFragment(getFragmentManager(), "stationLoader");
 
 		if (fragment.isTaskRunning()) {
@@ -132,7 +150,7 @@ public class FragmentOfferDetail extends Fragment{
 			}
 		}
 		
-	}
+	}*/
 	
 	private void loadData() {
 		llLoading.setVisibility(View.VISIBLE);
@@ -185,12 +203,45 @@ public class FragmentOfferDetail extends Fragment{
 		
 		images = result.images;
 	}
+	protected void populateView(Cursor result) {
+		llLoading.setVisibility(View.GONE);
+		txtTitle.setText(result.getString(result.getColumnIndex(OffersTableHelper.TITLE)));
+		txtPlace.setText(result.getString(result.getColumnIndex(OffersTableHelper.PLACENAME)));
+		txtPrice.setText((result.getFloat(result.getColumnIndex(OffersTableHelper.PRICE))) - ((result.getFloat(result.getColumnIndex(OffersTableHelper.PRICE))*result.getFloat(result.getColumnIndex(OffersTableHelper.DISCOUNT))/100)) + " €");
+		txtDiscount.setText(result.getFloat(result.getColumnIndex(OffersTableHelper.DISCOUNT)) + "%");
+		txtPreviousPrice.setText(result.getFloat(result.getColumnIndex(OffersTableHelper.PRICE)) + " €");
+		txtDescription.setText(result.getString(result.getColumnIndex(OffersTableHelper.DESCRIPTION)));
+		txtScadenza.setText("L'offerta scade il " + result.getString(result.getColumnIndex(OffersTableHelper.EXPIRATIONDATE)).split("T")[0]);
+		txtAdress.setText(result.getString(result.getColumnIndex(OffersTableHelper.PLACEADDRESS)));
+		txtLink.setText(result.getString(result.getColumnIndex(OffersTableHelper.LINK)));
+		Glide.with(getActivity().getApplicationContext()).load(MyLoopJ.BASE_URL + "/"+result.getString(result.getColumnIndex(OffersTableHelper.MAINPHOTO))).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(imgHeader);
+		
+		DbHelper dbHelper = new DbHelper(getActivity());
+		String query = "SELECT  * FROM " + PhotosOffersTableHelper.TABLE_NAME + " WHERE " + PhotosOffersTableHelper.ID_OFFER + " = " + result.getString(result.getColumnIndex(OffersTableHelper._ID));
+
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		Cursor cursor = db.rawQuery(query, null);
+
+		String[] photos = new String[cursor.getColumnCount()];
+		if (cursor.moveToFirst()) {
+			int i = 0;
+			do {
+				photos[i] = cursor.getString(cursor.getColumnIndex(PhotosOffersTableHelper.PHOTOS));
+				i++;
+			} while (cursor.moveToNext());
+		}
+		
+		images = photos;
+		result.close();
+	}
 
 	private void getMyArguments() {
 		Bundle bundle = getArguments();
 		mLat = bundle.getDouble(LAT_OFFER);
 		mLng = bundle.getDouble(LON_OFFER);
 		mPlace = bundle.getString(PLACE_NAME);
+		idOffer = bundle.getInt(ID_OFFER);
 	}
 
 	private void initilizeMap() {
@@ -262,7 +313,7 @@ public class FragmentOfferDetail extends Fragment{
     @Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putParcelable("stations", itemOfferDetails);
+		//outState.putParcelable("stations", itemOfferDetails);
 	}
 	
 	

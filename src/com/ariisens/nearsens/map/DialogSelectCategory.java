@@ -19,7 +19,7 @@ import android.widget.ListView;
 
 import com.ariisens.nearsens.MyLoopJ;
 import com.ariisens.nearsens.R;
-import com.ariisens.nearsens.interfaces.IOptionMap;
+import com.ariisens.nearsens.interfaces.IOption;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class DialogSelectCategory extends DialogFragment {
@@ -33,12 +33,12 @@ public class DialogSelectCategory extends DialogFragment {
 		return dialog;
 	}
 
-	IOptionMap iOptionMap;
+	IOption iOptionMap;
 	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		iOptionMap = (IOptionMap) activity;
+		iOptionMap = (IOption) activity;
 	}
 	
 	@Override

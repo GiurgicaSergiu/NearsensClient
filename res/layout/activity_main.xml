@@ -84,14 +84,47 @@
                 android:textColor="#fff" />
         </LinearLayout>
     </LinearLayout>
-    
-    <ListView
-        android:id="@+id/lvOffers"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       android:divider="@null"
-        tools:listitem="@layout/cella_offerte" >
 
-    </ListView>
+ <RelativeLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:gravity="center" >
+
+     <LinearLayout
+         android:id="@+id/ll_Loading_offers"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:background="#fff"
+         android:gravity="center"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentTop="true"
+         android:orientation="vertical" >
+
+         <ProgressBar
+             android:id="@+id/progressBar1"
+             style="?android:attr/progressBarStyleLarge"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content" />
+
+     </LinearLayout>
+
+   
+
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentTop="true"
+         android:orientation="vertical" >
+           <ListView
+         android:id="@+id/lvOffers"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:divider="@null"
+         tools:listitem="@layout/cella_offerte" >
+     </ListView>
+     </LinearLayout>
+
+ </RelativeLayout>
 
 </LinearLayout>

@@ -16,6 +16,9 @@ public class OffersTableHelper implements BaseColumns {
 	public static final String IDPLACE = "idPlace";
 	public static final String PLACEADDRESS = "placeAddress";
 	public static final String PLACENAME = "placeName";
+	public static final String PLACELAT = "placeLat";
+	public static final String PLACELNG = "placeLng";
+	
 
 	public static String CREATE_QUERY = "CREATE TABLE " + TABLE_NAME + " ("
 			+ _ID + " INTEGER, " 
@@ -29,6 +32,8 @@ public class OffersTableHelper implements BaseColumns {
 			+ MAINPHOTO + " TEXT ,"
 			+ IDPLACE + " INTEGER ,"
 			+ PLACEADDRESS + " TEXT ,"
+			+ PLACELAT + " REAL ,"
+			+ PLACELNG + " REAL ,"
 			+ PLACENAME + " TEXT"
 			+ ");";
 }

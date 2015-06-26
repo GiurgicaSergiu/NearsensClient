@@ -70,24 +70,12 @@ public class ItemsOffers implements Parcelable {
 				double placeLat = json_data.getDouble("PlaceLat");
 				double placeLng = json_data.getDouble("PlaceLng");
 				String title = json_data.getString("Title");
-				int id = json_data.getInt("Id");
+				final int id = json_data.getInt("Id");
 				float price = json_data.getLong("Price");
 				float previousPrice = json_data.getLong("Discount");
-				String placeName = json_data.getString("PlaceName");
+				final String placeName = json_data.getString("PlaceName");
 				String icon = json_data.getString("MainPhoto");
-				
-				ContentValues contentValues = new ContentValues();
-				contentValues.put(OffersTableHelper._ID, id);
-				contentValues.put(OffersTableHelper.PLACENAME, placeName);
-				context.getContentResolver().insert(MyContentProvider.OFFER_URI, contentValues);
-				
-				
-				try {
-					Thread.sleep(300);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+
 				MyLoopJ.getInstance().get(MyLoopJ.getOfferDetails(id), new JsonHttpResponseHandler() {
 
 					@Override
@@ -108,8 +96,11 @@ public class ItemsOffers implements Parcelable {
 							contentValues.put(OffersTableHelper.MAINPHOTO,response.getString("MainPhoto"));
 							contentValues.put(OffersTableHelper.IDPLACE,response.getString("IdPlace"));
 							contentValues.put(OffersTableHelper.PLACEADDRESS,response.getString("PlaceAddress"));
-							
-							context.getContentResolver().update(Uri.parse(MyContentProvider.OFFER_URI + "/" + response.getString("Id") ), contentValues, null, null);
+							contentValues.put(OffersTableHelper._ID, id);
+							contentValues.put(OffersTableHelper.TITLE, response.getString("Title"));
+							contentValues.put(OffersTableHelper.PLACENAME, placeName);
+							context.getContentResolver().insert(MyContentProvider.OFFER_URI, contentValues);
+							//context.getContentResolver().update(Uri.parse(MyContentProvider.OFFER_URI + "/" + response.getString("Id") ), contentValues, null, null);
 			
 						} catch (JSONException e) {
 							e.printStackTrace();

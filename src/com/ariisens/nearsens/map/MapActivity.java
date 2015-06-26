@@ -28,7 +28,7 @@ import android.widget.TextView;
 import com.ariisens.nearsens.MyLoopJ;
 import com.ariisens.nearsens.R;
 import com.ariisens.nearsens.interfaces.ICheckGPS;
-import com.ariisens.nearsens.interfaces.IOptionMap;
+import com.ariisens.nearsens.interfaces.IOption;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -45,7 +45,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class MapActivity extends Activity implements OnMapReadyCallback,
-		ICheckGPS, IOptionMap {
+		ICheckGPS, IOption {
 
 	private static final String URL_API = "url_api";
 	private static final String TIPO_VALUE = "url_val";

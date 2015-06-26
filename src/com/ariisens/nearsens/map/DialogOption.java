@@ -13,7 +13,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.ariisens.nearsens.R;
-import com.ariisens.nearsens.interfaces.IOptionMap;
+import com.ariisens.nearsens.interfaces.IOption;
 
 public class DialogOption extends DialogFragment {
 
@@ -31,12 +31,12 @@ public class DialogOption extends DialogFragment {
 		return dialog;
 	}
 
-	IOptionMap iOptionMap;
+	IOption iOptionMap;
 	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		iOptionMap = (IOptionMap) activity;
+		iOptionMap = (IOption) activity;
 	}
 	
 	@Override

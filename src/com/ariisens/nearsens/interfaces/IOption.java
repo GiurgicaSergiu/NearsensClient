@@ -1,6 +1,6 @@
 package com.ariisens.nearsens.interfaces;
 
-public interface IOptionMap {
+public interface IOption {
 	void updateRaggio(int raggio);
 	void onConfirmArea();
 	void updateTipo(String tipo,String value);

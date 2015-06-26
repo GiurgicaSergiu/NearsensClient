@@ -19,9 +19,9 @@ public class OfferDetailsActivity extends Activity {
 		setContentView(R.layout.activity_offer_details);
 
 		FragmentOfferDetail.getOrCreateFragment(getFragmentManager(), "detail",
-				getIntent().getExtras().getLong(ID_OFFER), getIntent()
-						.getExtras().getDouble(LAT), getIntent().getExtras()
-						.getDouble(LON),
+				getIntent().getExtras().getInt(ID_OFFER), getIntent()
+						.getExtras().getFloat(LAT), getIntent().getExtras()
+						.getFloat(LON),
 				getIntent().getExtras().getString(PLACE));
 
 	}
