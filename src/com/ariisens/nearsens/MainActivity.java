@@ -1,8 +1,8 @@
 package com.ariisens.nearsens;
 
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
 
-import io.fabric.sdk.android.Fabric;
+//import io.fabric.sdk.android.Fabric;
 
 import java.util.ArrayList;
 
@@ -16,6 +16,7 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -43,6 +45,7 @@ import com.ariisens.nearsens.offerdetails.OfferDetailsActivity;
 import com.ariisens.nearsens.offers.InsertDataInDb;
 import com.ariisens.nearsens.offers.ItemsOffers;
 import com.ariisens.nearsens.offers.MyCursorAdapterOffers;
+import com.ariisens.nearsens.sharedpreferences.SharedPreferencesManager;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,IOption,ILoadOffers{
@@ -96,6 +99,10 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 		createMenu();
 		
 		adapter = new MyCursorAdapterOffers(this, null);
+		
+		if (!SharedPreferencesManager.instance(this).areSubcategoriesDownloaded()) {
+			loadSubcategories();
+		}
 		
 		if (savedInstanceState == null) {
 			llLoadingOffers.bringToFront();
@@ -173,6 +180,35 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 		});
 		
 	}
+	
+	private void loadSubcategories() {
+		MyLoopJ.getInstance().get(MyLoopJ.getSubCategories(),
+				new JsonHttpResponseHandler() {
+			
+			@Override
+			public void onSuccess(int statusCode, Header[] headers,
+				JSONArray response) {
+				ArrayList<String> subcategories = new ArrayList<String>();
+				for (int i = 0; i < response.length(); i++) {
+					String object;
+					try {
+						object = (String) response.get(i);
+						subcategories.add(object);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+				InsertDataInDb.insertSubcategories(subcategories, MainActivity.this);
+				SharedPreferencesManager.instance(MainActivity.this).setSubcategoriesDownloaded(true);
+			}
+			
+			@Override
+			public void onFailure(int statusCode, Header[] headers,
+					Throwable throwable, JSONArray errorResponse) {
+				super.onFailure(statusCode, headers, throwable, errorResponse);
+			}
+		});
+	}
 
 	private void loadOffers() {
 
@@ -188,7 +224,12 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 							JSONArray response) {
 
 						super.onSuccess(statusCode, headers, response);
-						InsertDataInDb.insert(response, getApplicationContext(), MainActivity.this);
+						ProgressBar progressBar = new ProgressBar(MainActivity.this);
+						llLoadingOffers.setVisibility(View.VISIBLE);
+						llLoadingOffers.addView(progressBar);
+						llLoadingOffers.bringToFront();
+						
+						InsertDataInDb.insertOffers(response, getApplicationContext(), MainActivity.this);
 					}
 
 					@Override

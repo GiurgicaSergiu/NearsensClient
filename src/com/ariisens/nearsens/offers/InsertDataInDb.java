@@ -1,5 +1,7 @@
 package com.ariisens.nearsens.offers;
 
+import java.util.ArrayList;
+
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,16 +14,26 @@ import com.ariisens.nearsens.MyLoopJ;
 import com.ariisens.nearsens.database.MyContentProvider;
 import com.ariisens.nearsens.database.OffersTableHelper;
 import com.ariisens.nearsens.database.PhotosOffersTableHelper;
+import com.ariisens.nearsens.database.SubcategoriesTableHelper;
 import com.ariisens.nearsens.interfaces.ILoadOffers;
+import com.google.android.gms.internal.in;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class InsertDataInDb {
 	
 	private static int total;
 	
-	public static void insertSubcategories(String[] subcategories, Context context) {
+	public static void insertSubcategories(ArrayList<String> subcategories, Context context) {
 		context.getContentResolver().delete(MyContentProvider.SUBCATEGORIES_URI, null, null);
-		
+		ContentValues values;
+		for (String subcategory : subcategories) {
+			values = new ContentValues();
+			values.put(SubcategoriesTableHelper.NAME, subcategory);
+			context.getContentResolver().insert(MyContentProvider.SUBCATEGORIES_URI, values);
+		}
+		values = new ContentValues();
+		values.put(SubcategoriesTableHelper.NAME, "Tutte");
+		context.getContentResolver().insert(MyContentProvider.SUBCATEGORIES_URI, values);
 	}
 	
 	public static void insertOffers(final JSONArray offers,final Context context,final ILoadOffers loadOffers){	
