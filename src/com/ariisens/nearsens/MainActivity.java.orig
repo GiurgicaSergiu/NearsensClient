@@ -237,11 +237,14 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 							JSONArray response) {
 
 						super.onSuccess(statusCode, headers, response);
+<<<<<<< HEAD
+=======
 						ProgressBar progressBar = new ProgressBar(MainActivity.this);
 						llLoadingOffers.setVisibility(View.VISIBLE);
 						llLoadingOffers.addView(progressBar);
 						llLoadingOffers.bringToFront();
 						
+>>>>>>> a996da3ba3f13cc91d327d6ec9860b3346927cdf
 						InsertDataInDb.insertOffers(response, getApplicationContext(), MainActivity.this);
 					}
 

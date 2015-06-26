@@ -1,0 +1,13 @@
+#This project.properties file is being managed by Fabric.
+#Manifest merger has been enabled to pull in kit resources.
+#Fri Jun 26 13:58:55 CEST 2015
+manifestmerger.enabled=true
+<<<<<<< HEAD
+android.library.reference.3=kit-libs/com-crashlytics-sdk-android_crashlytics
+target=android-22
+android.library.reference.2=kit-libs\\com-crashlytics-sdk-android_crashlytics
+android.library.reference.1=..\\..\\..\\..\\..\\..\\SDK\\sdk\\extras\\google\\google_play_services\\libproject\\google-play-services_lib
+=======
+target=android-19
+android.library.reference.1=../google-play-services_lib
+>>>>>>> a996da3ba3f13cc91d327d6ec9860b3346927cdf

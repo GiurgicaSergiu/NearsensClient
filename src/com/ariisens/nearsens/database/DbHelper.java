@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper extends SQLiteOpenHelper {
 
 	private final static String DB_NAME = "ariisens.db";
-	private final static int DB_VERSION = 7;
+	private final static int DB_VERSION = 9;
 
 	public DbHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
@@ -17,7 +17,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(OffersTableHelper.CREATE_QUERY);
 		db.execSQL(PhotosOffersTableHelper.CREATE_QUERY);
-		
+		db.execSQL(SubcategoriesTableHelper.CREATE_QUERY);
 	}
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -25,6 +25,8 @@ public class DbHelper extends SQLiteOpenHelper {
 		db.execSQL(OffersTableHelper.CREATE_QUERY);
 		db.execSQL("DROP TABLE " + PhotosOffersTableHelper.TABLE_NAME);
 		db.execSQL(PhotosOffersTableHelper.CREATE_QUERY);
+		db.execSQL("DROP TABLE " + SubcategoriesTableHelper.TABLE_NAME);
+		db.execSQL(SubcategoriesTableHelper.CREATE_QUERY);
 	}
 
 }
