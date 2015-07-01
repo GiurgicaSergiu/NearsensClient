@@ -11,12 +11,14 @@
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="22" />
-
+    
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" >
+    </uses-permission>
 
     <application
         android:name="com.ariisens.nearsens.MyMainApplication"
@@ -45,6 +47,10 @@
         <activity
             android:name="com.ariisens.nearsens.map.MapActivity"
             android:label="@string/title_activity_map" >
+        </activity>
+        <activity
+            android:name="com.ariisens.nearsens.augmentedreality.AugmentedRealityActivity"
+            android:label="reality" >
         </activity>
         <activity
             android:name="com.ariisens.nearsens.offerdetails.OfferDetailsActivity"

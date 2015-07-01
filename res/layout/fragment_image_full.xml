@@ -27,7 +27,7 @@
                 <com.ariisens.nearsens.customview.TouchImageView
                     android:id="@+id/imgFull"
                     android:layout_width="match_parent"
-                    android:layout_height="170dp"
+                    android:layout_height="@dimen/app_bar_height"
                     android:scaleType="centerCrop"
                     android:src="@drawable/carne" />
                 

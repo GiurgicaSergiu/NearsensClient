@@ -47,8 +47,10 @@ public class FragmentOfferDetail extends Fragment{
 	private static final String LON_OFFER = "lonOffer";
 
 	private static final String PLACE_NAME = "place";
+
+	protected static final String FRAGMENT_FULL_SCREEN = "fragmentfullscreen";
 	
-    private TextView txtTitle, txtPlace, txtDiscount, txtPreviousPrice, txtPrice, txtDescription, txtScadenza, txtAdress, txtLink;
+    private TextView  txtPlace, txtDiscount, txtPreviousPrice, txtPrice, txtDescription, txtScadenza, txtAdress, txtLink;
 
     private ImageView imgHeader;
     
@@ -202,7 +204,7 @@ public class FragmentOfferDetail extends Fragment{
 			
 			@Override
 			public void onClick(View v) {
-				FragmentImageFullScreen.getOrCreateFragment(getActivity().getFragmentManager(), "fragmentfullScreen",imgHeader.getDrawable(),images);			
+				FragmentImageFullScreen.getOrCreateFragment(getActivity().getFragmentManager(), FRAGMENT_FULL_SCREEN,imgHeader.getDrawable(),images);			
 			}
 		});
 	}

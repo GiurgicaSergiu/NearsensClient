@@ -41,7 +41,7 @@ public class FragmentImageFullScreen extends Fragment {
 			fragment.images = images;
 			fragmentManager.beginTransaction()
 					.add(R.id.frame_offer_detail, fragment, tag)
-					.addToBackStack(tag).commit();
+					.addToBackStack(tag+"2").commit();
 		}
 		return fragment;
 	}
@@ -81,7 +81,8 @@ public class FragmentImageFullScreen extends Fragment {
 		int width = displaymetrics.widthPixels;
 		for(int i = 0; i<images.length;i++){
 		    TouchImageView imgGenereted = new TouchImageView(getActivity());
-			imgGenereted.setLayoutParams(new LinearLayout.LayoutParams(width,(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getActivity().getResources().getDisplayMetrics())));
+		    
+			imgGenereted.setLayoutParams(new LinearLayout.LayoutParams(width,(int) getResources().getDimension(R.dimen.app_bar_height)));
 			llImages.addView(imgGenereted);
 			Glide.with(getActivity().getApplicationContext()).load(MyLoopJ.BASE_URL + "/"+images[i]).centerCrop().into(imgGenereted);
 		}
@@ -119,20 +120,9 @@ public class FragmentImageFullScreen extends Fragment {
 		llGallery.clearAnimation();
 		ObjectAnimator.ofFloat(llGallery, "translationY", 0, getDisplayHeight() / 2)
 				.setDuration(600).start();
-		ObjectAnimator.ofFloat(llGallery, "scaleX", 1.0f, 1.2f).setDuration(600)
+		ObjectAnimator.ofFloat(llGallery, "scaleX", 1.0f, 1.1f).setDuration(600)
 				.start();
-		ObjectAnimator.ofFloat(llGallery, "scaleY", 1.0f, 1.4f).setDuration(600)
-				.start();
-
-	}
-	
-	private void animateImageBack() {
-		llGallery.clearAnimation();
-		ObjectAnimator.ofFloat(llGallery, "translationY", getDisplayHeight() / 2,0)
-				.setDuration(600).start();
-		ObjectAnimator.ofFloat(llGallery, "scaleX", 1.2f, 1.0f).setDuration(600)
-				.start();
-		ObjectAnimator.ofFloat(llGallery, "scaleY", 1.4f, 1.0f).setDuration(600)
+		ObjectAnimator.ofFloat(llGallery, "scaleY", 1.0f, 1.3f).setDuration(600)
 				.start();
 
 	}

@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.ariisens.nearsens.augmentedreality.AugmentedRealityActivity;
 import com.ariisens.nearsens.customview.CustomProgressBar;
 import com.ariisens.nearsens.database.DbHelper;
 import com.ariisens.nearsens.database.MyContentProvider;
@@ -293,13 +294,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		int id = item.getItemId();
-		if (id == R.id.action_map) {
+		switch (item.getItemId()) {
+		case R.id.action_map:
+
 			goToMap();
 			return true;
-		} else {
-			
+
+		case R.id.action_camera:
+			goToCamera();
+			break;
+		default:
+			break;
 		}
+
+	
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -307,7 +315,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 		Intent intent = new Intent(this, MapActivity.class);
 		startActivity(intent);
 	}
-
+	
+	private void goToCamera() {
+		Intent intent = new Intent(this, AugmentedRealityActivity.class);
+		startActivity(intent);
+	}
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);

@@ -213,8 +213,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 		googleMap.setMyLocationEnabled(true);
 		circle = googleMap.addCircle(new CircleOptions().center(center)
 				.radius(raggioArea * 1000)
-				.strokeColor(Color.parseColor("#76c2af")).strokeWidth(2)
-				.fillColor(Color.parseColor("#5576c2af")));
+				.strokeColor(getResources().getColor(R.color.cp)).strokeWidth(2)
+				.fillColor(getResources().getColor(R.color.cpalfa)));
 		zoom =  (16 - Math.log(circle.getRadius() / 275) / Math.log(2));
 		googleMap
 				.animateCamera(CameraUpdateFactory.newLatLngZoom(center, (float)zoom));
