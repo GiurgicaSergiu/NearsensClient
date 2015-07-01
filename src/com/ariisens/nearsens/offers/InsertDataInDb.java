@@ -16,7 +16,6 @@ import com.ariisens.nearsens.database.OffersTableHelper;
 import com.ariisens.nearsens.database.PhotosOffersTableHelper;
 import com.ariisens.nearsens.database.SubcategoriesTableHelper;
 import com.ariisens.nearsens.interfaces.ILoadOffers;
-import com.google.android.gms.internal.in;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class InsertDataInDb {

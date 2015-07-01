@@ -1,58 +1,59 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LinearLayout1"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app1="http://schemas.android.com/apk/res/com.ariisens.nearsens"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="${relativePackage}.${activityClass}" >
+    android:background="#e5e5e5"
+    tools:context="com.ariisens.nearsens.offerdetails.OfferDetailsActivity" >
 
-    <LinearLayout
-        android:id="@+id/llMappa"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#76c2af" >
+        android:layout_height="@dimen/app_bar_height_main"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:gravity="center_vertical"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
+            android:id="@+id/llMappa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways"
             android:paddingBottom="5dp"
             android:paddingTop="5dp" >
 
-           <com.ariisens.nearsens.customview.MyTextView
+            <com.ariisens.nearsens.customview.MyTextView
                 android:id="@+id/txtTipo"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Scegli tipo"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:singleLine="true"
+                android:text="Scegli tipo"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="#fff" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.2"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp" >
 
             <View
                 android:id="@+id/view1"
                 android:layout_width="1dp"
                 android:layout_height="20dp"
-                android:background="#fff"
-                 />
+                android:background="#fff" />
 
-           <com.ariisens.nearsens.customview.MyTextView
+            <com.ariisens.nearsens.customview.MyTextView
                 android:id="@+id/txtCat"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Scegli categoria"
+                android:layout_weight="1.2"
                 android:gravity="center"
+                android:text="Scegli categoria"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="#fff" />
 
@@ -60,29 +61,28 @@
                 android:id="@+id/view2"
                 android:layout_width="1dp"
                 android:layout_height="20dp"
-                android:background="#fff"
-                 />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp" >
+                android:background="#fff" />
 
             <com.ariisens.nearsens.customview.MyTextView
                 android:id="@+id/txtKm"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="Km"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                android:textStyle="bold" />
         </LinearLayout>
-    </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:orientation="vertical" >
+    
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -104,5 +104,5 @@
             android:rotation="-270"
             android:visibility="invisible" />
     </RelativeLayout>
-
 </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

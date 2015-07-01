@@ -7,8 +7,9 @@
         android:id="@+id/action_map"
         android:orderInCategory="100"
         android:icon="@drawable/map"
-        android:title="CIAO"
-        android:showAsAction="ifRoom"
+        android:title="Show map"
+        android:showAsAction="always"
+        app:showAsAction="always"
       />
  
 

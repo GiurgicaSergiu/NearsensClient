@@ -17,6 +17,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,7 +46,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class MapActivity extends Activity implements OnMapReadyCallback,
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback,
 		ICheckGPS, IOption {
 
 	private static final String URL_API = "url_api";
@@ -53,7 +55,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 	private static final String URL_API_CAT = "urls_cat";
 	private static final String CAT_VALUE = "cat_val";
 	private int raggioArea;
-	private static int zoom = 12;
+	private static double zoom = 12;
 	private GoogleMap myMap;
 	private ArrayList<MarkerOptions> myMarkers;
 	private ArrayList<InfoWindowMarker> infoWindowMarkers;
@@ -64,13 +66,15 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
     private TextView txtTipo;
     private TextView txtCat;
     private TextView txtKm;
+	private Toolbar toolbar;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_map);
-		editActionBar();
+		initInstances();
 		
 		txtTipo = (TextView) findViewById(R.id.txtTipo);
 		txtCat = (TextView) findViewById(R.id.txtCat);
@@ -116,11 +120,16 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 
 	}
 
-	private void editActionBar() {
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
+	private void initInstances() {
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		toolbar.inflateMenu(R.menu.main);
+		setSupportActionBar(toolbar);
+		getSupportActionBar().setTitle(getResources().getString(R.string.title_activity_map));
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
 	}
-	
+
+
 	@Override
 	protected void onResume() {
 
@@ -206,9 +215,9 @@ public class MapActivity extends Activity implements OnMapReadyCallback,
 				.radius(raggioArea * 1000)
 				.strokeColor(Color.parseColor("#76c2af")).strokeWidth(2)
 				.fillColor(Color.parseColor("#5576c2af")));
-		zoom = (int) (16 - Math.log(circle.getRadius() / 500) / Math.log(2));
+		zoom =  (16 - Math.log(circle.getRadius() / 275) / Math.log(2));
 		googleMap
-				.animateCamera(CameraUpdateFactory.newLatLngZoom(center, zoom));
+				.animateCamera(CameraUpdateFactory.newLatLngZoom(center, (float)zoom));
 	}
 	
 

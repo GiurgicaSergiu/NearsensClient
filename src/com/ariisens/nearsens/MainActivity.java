@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -18,9 +19,13 @@ import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +37,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.ariisens.nearsens.customview.CustomProgressBar;
 import com.ariisens.nearsens.database.DbHelper;
 import com.ariisens.nearsens.database.MyContentProvider;
 import com.ariisens.nearsens.database.OffersTableHelper;
@@ -49,7 +55,7 @@ import com.ariisens.nearsens.offers.MyCursorAdapterOffers;
 import com.ariisens.nearsens.sharedpreferences.SharedPreferencesManager;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,IOption,ILoadOffers,SwipeRefreshLayout.OnRefreshListener{
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,IOption,ILoadOffers,SwipeRefreshLayout.OnRefreshListener{
 	
 	private static final String URL_API = "url_api";
 	private static final String TIPO_VALUE = "url_val";
@@ -74,6 +80,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 
 	private MyCursorAdapterOffers adapter;
 	private SwipeRefreshLayout swipeLayout;
+	private Toolbar toolbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +89,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 		//Fabric.with(this, new Crashlytics());
 
 		setContentView(R.layout.activity_main);
+		initInstances();
 
 		listView = (ListView) findViewById(R.id.lvOffers);
 		llLoadingOffers = (LinearLayout) findViewById(R.id.ll_Loading_offers);
@@ -128,6 +136,13 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 		}
 		
 		getLoaderManager().initLoader(ITEMS_LOADER_ID, null, this);
+	}
+	
+	private void initInstances() {
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		toolbar.inflateMenu(R.menu.main);
+		setSupportActionBar(toolbar);
+		getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
 	}
 	
 	@Override 
@@ -237,7 +252,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 							JSONArray response) {
 
 						super.onSuccess(statusCode, headers, response);
-						ProgressBar progressBar = new ProgressBar(MainActivity.this);
+						ContentLoadingProgressBar progressBar = new ContentLoadingProgressBar(MainActivity.this);
 						llLoadingOffers.setVisibility(View.VISIBLE);
 						llLoadingOffers.addView(progressBar);
 						llLoadingOffers.bringToFront();

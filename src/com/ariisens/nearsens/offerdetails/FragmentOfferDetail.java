@@ -8,6 +8,9 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -74,7 +77,7 @@ public class FragmentOfferDetail extends Fragment{
 
 		@Override
 		public void onLoad(ItemOfferDetails result) {
-			populateView(result);
+			//populateView(result);
 		}
 
 		@Override
@@ -84,6 +87,10 @@ public class FragmentOfferDetail extends Fragment{
 
 		
 	};
+
+	private Toolbar toolbar;
+
+	private CollapsingToolbarLayout cLayout;
 
 	public static FragmentOfferDetail getOrCreateFragment(FragmentManager fragmentManager, String tag,int id,double lat,double lon,String place) {
 		FragmentOfferDetail fragment = (FragmentOfferDetail) fragmentManager.findFragmentByTag(tag);
@@ -106,6 +113,10 @@ public class FragmentOfferDetail extends Fragment{
 		
 		View view  = inflater.inflate(R.layout.fragment_offer_details, container,false);
 		
+		 cLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collapsingToolbarLayout);
+		
+		initInstances(view);
+		
 		inizializeView(view);
 		
         initilizeMap();
@@ -125,12 +136,22 @@ public class FragmentOfferDetail extends Fragment{
         
         populateView(cursor);
         
-        editActionBar(view);
+       // editActionBar(view);
         
         setMap();
 		
 		return view;
 	}
+	
+	private void initInstances(View view) {
+		toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+		AppCompatActivity activity = (AppCompatActivity) getActivity();
+		activity.setSupportActionBar(toolbar);
+		//activity.getSupportActionBar().setHome
+		activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		activity.getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+		}
+
 
 	/*private void controllMyLoadData(Bundle primoAvvio) {
 		fragment = DownloaderFragmentOfferDetail.getOrCreateFragment(getFragmentManager(), "stationLoader");
@@ -160,7 +181,6 @@ public class FragmentOfferDetail extends Fragment{
 
 	private void inizializeView(View v) {
 		
-		txtTitle = (TextView) v.findViewById(R.id.txtTitle);
 		txtPlace = (TextView) v.findViewById(R.id.txtPlace);
 		txtDiscount = (TextView) v.findViewById(R.id.txtDiscount);
 		txtPreviousPrice = (TextView) v.findViewById(R.id.txtPreviusPrice);
@@ -187,10 +207,10 @@ public class FragmentOfferDetail extends Fragment{
 		});
 	}
 
-	protected void populateView(ItemOfferDetails result) {
+	/*protected void populateView(ItemOfferDetails result) {
+		
 		llLoading.setVisibility(View.GONE);
 		itemOfferDetails = result;
-		txtTitle.setText(result.title);
 		txtPlace.setText(mPlace);
 		txtPrice.setText((result.price - ((result.price*result.discount)/100)) + " €");
 		txtDiscount.setText(result.discount + "%");
@@ -202,10 +222,11 @@ public class FragmentOfferDetail extends Fragment{
 		Glide.with(getActivity().getApplicationContext()).load(MyLoopJ.BASE_URL + "/"+result.mainPhoto).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(imgHeader);
 		
 		images = result.images;
-	}
+	}*/
 	protected void populateView(Cursor result) {
 		llLoading.setVisibility(View.GONE);
-		txtTitle.setText(result.getString(result.getColumnIndex(OffersTableHelper.TITLE)));
+		cLayout.setTitle(result.getString(result.getColumnIndex(OffersTableHelper.TITLE)));
+		
 		txtPlace.setText(result.getString(result.getColumnIndex(OffersTableHelper.PLACENAME)));
 		txtPrice.setText((result.getFloat(result.getColumnIndex(OffersTableHelper.PRICE))) - ((result.getFloat(result.getColumnIndex(OffersTableHelper.PRICE))*result.getFloat(result.getColumnIndex(OffersTableHelper.DISCOUNT))/100)) + " €");
 		txtDiscount.setText(result.getFloat(result.getColumnIndex(OffersTableHelper.DISCOUNT)) + "%");
@@ -270,7 +291,7 @@ public class FragmentOfferDetail extends Fragment{
 		
 	}
 	
-	private void editActionBar(View v) {
+	/*private void editActionBar(View v) {
 		mActionBarBackgroundDrawable = getResources().getDrawable(R.drawable.bg_actionbar);
 		mActionBarBackgroundDrawable.setAlpha(0);
 		getActivity().getActionBar().setBackgroundDrawable(mActionBarBackgroundDrawable);
@@ -284,7 +305,7 @@ public class FragmentOfferDetail extends Fragment{
 		 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
 			    mActionBarBackgroundDrawable.setCallback(mDrawableCallback);
 		}
-	}
+	}*/
 	
 	private NotifyingScrollView.OnScrollChangedListener mOnScrollChangedListener = new NotifyingScrollView.OnScrollChangedListener() {
         public void onScrollChanged(ScrollView who, int l, int t, int oldl, int oldt) {
