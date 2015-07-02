@@ -15,11 +15,13 @@ import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.ContentLoadingProgressBar;
@@ -54,9 +56,15 @@ import com.ariisens.nearsens.offers.InsertDataInDb;
 import com.ariisens.nearsens.offers.ItemsOffers;
 import com.ariisens.nearsens.offers.MyCursorAdapterOffers;
 import com.ariisens.nearsens.sharedpreferences.SharedPreferencesManager;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,IOption,ILoadOffers,SwipeRefreshLayout.OnRefreshListener{
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,IOption,ILoadOffers,SwipeRefreshLayout.OnRefreshListener {
 	
 	private static final String URL_API = "url_api";
 	private static final String TIPO_VALUE = "url_val";
@@ -82,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 	private MyCursorAdapterOffers adapter;
 	private SwipeRefreshLayout swipeLayout;
 	private Toolbar toolbar;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 		
 		getLoaderManager().initLoader(ITEMS_LOADER_ID, null, this);
 	}
-	
+
 	private void initInstances() {
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		toolbar.inflateMenu(R.menu.main);

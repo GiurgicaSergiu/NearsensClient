@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="?attr/colorPrimary"
-            
+          	app:expandedTitleTextAppearance="@style/titleShadow"
             app:expandedTitleMarginStart="@dimen/expanded_toolbar_title_margin_start" >
 
             <ImageView
@@ -28,7 +28,18 @@
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7"
                 android:scaleType="centerCrop"
+                  android:background="@drawable/ombraofferta"
                 android:src="@drawable/carne" />
+            
+              <ImageView
+                android:id="@+id/imgShadow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7"
+                android:scaleType="centerCrop"
+                android:background="@drawable/map_gradient"
+                 />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

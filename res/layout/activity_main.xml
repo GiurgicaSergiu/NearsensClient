@@ -75,22 +75,18 @@
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:orientation="vertical" >
+
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:gravity="center" >
 
             <LinearLayout
                 android:id="@+id/ll_Loading_offers"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:background="#fff"
@@ -108,20 +104,20 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/swipe_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
+                android:paddingBottom="50dp"
                 android:orientation="vertical" >
 
                 <ListView
                     android:id="@+id/lvOffers"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:divider="@null"
                     tools:listitem="@layout/cella_offerte" >
                 </ListView>
             </android.support.v4.widget.SwipeRefreshLayout>
         </RelativeLayout>
-    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
